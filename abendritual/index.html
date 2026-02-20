@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Moonshine Yoga – Waldrühe</title>
-  <meta name="description" content="Geführtes Abendritual – 20 Minuten. Zünde deine Tranquil Woods Kerze an, finde eine bequeme Position und starte die Meditation." />
+  <title>Brendrick Yoga - Waldruhe</title>
+  <meta name="description" content="Geführtes Abendritual – Zünde deine Tranquil Woods Duftkerze an, finde eine bequeme Position und starte die Meditation." />
 
   <!-- Optional: elegante Serif / Sans (system fallback, ohne externe Fonts) -->
   <style>
@@ -418,6 +418,17 @@
   background: rgba(255,255,255,.45);
 }
 
+.hint{
+  margin: 10px auto 0;
+  max-width: 760px;
+  color: rgba(58,42,34,.78);
+  font-size: 14px;
+  line-height: 1.4;
+}
+@media (max-width: 520px){
+  .hint{ font-size: 13px; }
+}
+
 /* Mobile etwas kürzer */
 @media (max-width: 520px){
   .vol-range{ width: 130px; }
@@ -435,6 +446,89 @@
     @media (max-width: 520px){
       #guidedVolume, #forestVolume{ width: 90px; }
     }
+
+    /* ===== Responsive Improvements (Tablet + Handy) ===== */
+
+    /* Player Controls: darf umbrechen */
+    .player-controls{
+      flex-wrap: wrap;
+    }
+
+    /* Progress soll flexibel wachsen */
+    #guidedProgress, #forestProgress{
+      flex: 1 1 260px;
+      min-width: 160px;
+    }
+
+    /* Volume-Block darf schrumpfen */
+    .vol{
+      flex: 0 1 auto;
+    }
+
+    /* Time stabil, aber nicht zu breit */
+    #guidedTime, #forestTime{
+      flex: 0 0 auto;
+      min-width: 56px !important;
+    }
+
+    .site-logo{
+      display:block;
+      width: clamp(90px, 14vw, 140px);
+      height:auto;
+      margin: 30px auto 10px;
+      transition: transform .3s ease, opacity .3s ease;
+    }
+
+    .site-logo:hover{
+      transform: scale(1.05);
+      opacity: 1;
+    }
+
+
+    /* Tablet: etwas kompakter */
+    @media (max-width: 900px){
+      .wrap{ padding: 22px 14px 28px; }
+      .content{ padding: 28px 18px 18px; }
+      .page{ border-radius: 22px; }
+      .player-stack{ width: min(720px, 100%); }
+      .steps{ margin-top: 28px; }
+    }
+
+    /* Handy: Controls in 2–3 Zeilen, nichts überläuft */
+    @media (max-width: 560px){
+      h1{ font-size: clamp(34px, 9vw, 54px); }
+      .sub{ font-size: clamp(16px, 4.6vw, 22px); }
+      .lead{ font-size: 15px; line-height: 1.5; }
+
+      .content{ padding: 22px 14px 16px; }
+      .page{ border-radius: 18px; }
+      .player-top{ padding: 12px 12px; }
+      .player-controls{
+        padding: 0 12px 12px;
+        gap: 10px;
+        justify-content: flex-start;
+      }
+
+      /* Reihenfolge auf Handy */
+      #guidedToggle, #forestToggle{ order: 1; }
+      #guidedTime, #forestTime{ order: 2; margin-left: auto; text-align:right; }
+      #guidedProgress, #forestProgress{ order: 3; flex: 1 1 100%; width: 100%; }
+      .vol{ order: 4; width: 100%; justify-content: center; }
+
+      /* Volume-Slider etwas kürzer */
+      .vol-range{ width: min(220px, 65vw); }
+
+      /* Buttons minimal kleiner */
+      .icon-btn{ width: 36px; height: 36px; }
+      .vol-btn{ width: 26px; height: 26px; }
+      .vol-btn svg{ width: 20px; height: 20px; }
+      }
+
+      /* Sehr kleine Geräte */
+      @media (max-width: 380px){
+        .vol-range{ width: min(190px, 62vw); }
+        .hint{ font-size: 12.5px; }
+      }
 
   </style>
 </head>
@@ -509,38 +603,24 @@
         </g>
 
         <!-- Yogapose (vereinfacht) -->
-        <g transform="translate(490 930)" opacity=".88">
-          <path d="M0 -130
-                   C 18 -130, 36 -112, 34 -96
-                   C 32 -78, 12 -66, 0 -66
-                   C -12 -66, -32 -78, -34 -96
-                   C -36 -112, -18 -130, 0 -130 Z"
-                fill="#6c3f2c" opacity=".75"/>
-          <path d="M-18 -54 C-10 -84, 10 -84, 18 -54
-                   C 30 -20, 24 30, 10 74
-                   C 4 92, -4 92, -10 74
-                   C -24 30, -30 -20, -18 -54 Z"
-                fill="#4b2f24" opacity=".85"/>
-          <path d="M-34 -90 C-60 -70, -66 -40, -44 -18" stroke="#4b2f24" stroke-width="10" stroke-linecap="round" fill="none" opacity=".8"/>
-          <path d="M34 -90 C60 -70, 66 -40, 44 -18" stroke="#4b2f24" stroke-width="10" stroke-linecap="round" fill="none" opacity=".8"/>
-          <path d="M-10 72 C-18 104, -8 134, 18 140" stroke="#4b2f24" stroke-width="10" stroke-linecap="round" fill="none" opacity=".85"/>
-          <path d="M10 72 C24 92, 42 104, 62 102" stroke="#4b2f24" stroke-width="10" stroke-linecap="round" fill="none" opacity=".85"/>
-        </g>
+         
+        
       </svg>
-
       <section class="content">
         <div class="brand" aria-label="Moonshine Yoga">
           <!-- <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M15.6 2.8c-2.6 1-4.4 3.6-4.4 6.6 0 3.8 3 6.8 6.8 6.8 1.1 0 2.1-.2 3-.6-1.4 3.2-4.6 5.4-8.3 5.4C7.5 21 3 16.5 3 11.2 3 6.4 6.6 2.4 11.3 2c1.5-.1 3 .2 4.3.8z" fill="currentColor"/>
             <path d="M20.2 5.2l.5 1.5 1.5.5-1.5.5-.5 1.5-.5-1.5-1.5-.5 1.5-.5.5-1.5z" fill="currentColor" opacity=".9"/>
           </svg> -->
-          <span>BRENDRICK YOGA</span>
+          <!-- <span>BRENDRICK YOGA</span> -->
+          <img src="images/logo.svg" alt="Brendrick Yoga Logo" class="site-logo" />
+
         </div>
 
         <h1>WALDRUHE</h1>
         <p class="sub">Abendritual</p>
         <p class="lead">
-          Zünde deine Tranquil Woods Kerze an, finde eine bequeme Position<br/>
+          Zünde deine <i>Tranquil Woods</i> Duftkerze an, finde eine bequeme Position<br/>
           und starte die Meditation.
         </p>
 
@@ -556,7 +636,7 @@
                 <span>Geführte Meditation</span>
                 <span class="player-time" id="guidedDuration">(—:—)</span>
                   <audio id="guided" preload="metadata" playsinline>
-                    <source src="audio/waldruhe_meditation_abendritual.mp3" type="audio/mpeg">
+                    <source src="audio/meditation_wald.mp3" type="audio/mpeg">
                   </audio>
               </div>
             </div>
@@ -611,17 +691,17 @@
         </div>
 
           <!-- Secondary "button" -->
-          <div class="player secondary" role="button" tabindex="0" aria-label="Nur Waldklänge (30:00)">
+          <div class="player secondary" aria-label="Waldklänge">
             <div class="player-top">
               <div class="left">
                 <!-- <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M12 3a7 7 0 0 0-7 7v7a3 3 0 0 0 6 0V11a2 2 0 0 1 4 0v6a3 3 0 0 0 6 0V10a7 7 0 0 0-7-7zm-4 7a4 4 0 0 1 8 0v7a1 1 0 0 1-2 0V11a4 4 0 0 0-8 0v6a1 1 0 0 1-2 0V10z" fill="currentColor"/>
                 </svg> -->
-                <span>Nur Waldklänge</span>
+                <span>Waldklänge</span>
                 <span class="player-time" id="forestDuration">(—:—)</span>
 
                   <audio id="forest" preload="metadata" playsinline>
-                    <source src="audio/waldgeraeusche.mp3" type="audio/mpeg">
+                    <source src="audio/waldklaenge.mp3" type="audio/mpeg">
                   </audio>
               </div>
             </div>
@@ -672,6 +752,10 @@
             </div>
 
           </div>
+          <p class="hint">
+            <b> Hinweis: </b> Starte die geführte Meditation oder die Waldklänge – oder spiele beides gleichzeitig für mehr Atmosphäre.
+          </p>
+
         </div>
 
         <div class="steps" aria-label="Ritual-Schritte">
@@ -890,17 +974,14 @@ forestMute?.addEventListener('click', (e) => {
 
 
   async function playGuided() {
-    // anderes Audio stoppen
-    if (forest) forest.pause();
-
-    try {
-      await guided.play();
-      setIcon(true);
-    } catch (e) {
-      // Wenn Browser Play blockt (passiert ohne User-Interaktion)
-      console.warn('Play wurde blockiert:', e);
-    }
+  try {
+    await guided.play();
+    setIcon(true);
+  } catch (e) {
+    console.warn('Play wurde blockiert:', e);
   }
+}
+
 
   async function toggleGuided() {
     if (guided.paused) {
@@ -939,39 +1020,9 @@ forestMute?.addEventListener('click', (e) => {
     guided.currentTime = Number(guidedProgress.value);
   });
 
-  // Defaults setzen (optional)
-  guided.volume = Number(guidedVolume?.value ?? 1);
-  forest.volume = Number(forestVolume?.value ?? 1);
-
-  // Beim Schieben Audio-Lautstärke setzen
-  guidedVolume?.addEventListener('input', () => {
-    guided.volume = Number(guidedVolume.value);
-  });
-
-  forestVolume?.addEventListener('input', () => {
-    forest.volume = Number(forestVolume.value);
-  });
-
-  guidedVolume?.addEventListener('input', () => {
-    const v = Number(guidedVolume.value);
-    guided.volume = v;
-    guided.muted = v === 0;
-  });
-
-  forestVolume?.addEventListener('input', () => {
-    const v = Number(forestVolume.value);
-    forest.volume = v;
-    forest.muted = v === 0;
-  });
 
 
-
-
-  async function playForest() {
-  // Guided stoppen
-  guided.pause();
-  setIcon(false);
-
+async function playForest() {
   try {
     await forest.play();
     setForestIcon(true);
@@ -979,6 +1030,7 @@ forestMute?.addEventListener('click', (e) => {
     console.warn('Forest Play blockiert:', e);
   }
 }
+
 
 function toggleForest() {
   if (forest.paused) {
@@ -1018,6 +1070,17 @@ forestToggle.addEventListener('click', (e) => {
   e.preventDefault();
   e.stopPropagation();
   toggleForest();
+});
+
+// Sync, falls Browser/OS Volume/Muted verändert
+guided.addEventListener('volumechange', () => {
+  if (guidedVolume) guidedVolume.value = String(guided.muted ? 0 : guided.volume);
+  updateMuteIcon(guided, guidedVolOn, guidedVolOff);
+});
+
+forest.addEventListener('volumechange', () => {
+  if (forestVolume) forestVolume.value = String(forest.muted ? 0 : forest.volume);
+  updateMuteIcon(forest, forestVolOn, forestVolOff);
 });
 
 
