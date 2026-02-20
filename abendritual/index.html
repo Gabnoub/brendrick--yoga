@@ -1,0 +1,1027 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Moonshine Yoga – Waldrühe</title>
+  <meta name="description" content="Geführtes Abendritual – 20 Minuten. Zünde deine Tranquil Woods Kerze an, finde eine bequeme Position und starte die Meditation." />
+
+  <!-- Optional: elegante Serif / Sans (system fallback, ohne externe Fonts) -->
+  <style>
+    :root{
+      --bg-1:#f3e7df;
+      --bg-2:#e9d4c5;
+      --ink:#3a2a22;
+      --muted:#6a5346;
+      --green:#3c4a3e;
+      --green-2:#2f3c33;
+      --brown:#9a6a4b;
+      --brown-2:#7f553c;
+      --card:#f6ede6cc;
+      --stroke:#cdb8ad;
+      --shadow: 0 18px 40px rgba(40, 24, 18, .18);
+      --radius: 18px;
+      --radius-lg: 22px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 900px at 50% 15%, rgba(255,255,255,.55), rgba(255,255,255,0) 60%),
+        linear-gradient(180deg, var(--bg-1), var(--bg-2));
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      letter-spacing:.2px;
+    }
+
+    /* subtile Papier-Textur (CSS-only) */
+    body:before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.18;
+      background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");
+      mix-blend-mode:multiply;
+    }
+
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px 18px 36px;
+    }
+
+    .page{
+      width:min(980px, 100%);
+      border-radius:28px;
+      overflow:hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,.38), rgba(255,255,255,.18));
+      box-shadow: var(--shadow);
+      border:1px solid rgba(255,255,255,.45);
+      position:relative;
+    }
+
+    /* Illustration-Hintergrund (SVG) */
+    .hero-illustration{
+      position:absolute;
+      inset:0;
+      z-index:0;
+      opacity:.95;
+    }
+
+    .content{
+      position:relative;
+      z-index:1;
+      padding:34px 26px 22px;
+      text-align:center;
+    }
+
+    .brand{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      font-weight:600;
+      letter-spacing:.14em;
+      color:var(--brown-2);
+      text-transform:uppercase;
+      font-size:13px;
+    }
+    .brand svg{width:22px;height:22px;opacity:.95}
+
+    h1{
+      margin:18px 0 8px;
+      font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+      font-size: clamp(44px, 5.2vw, 72px);
+      letter-spacing:.04em;
+      color:var(--green);
+      font-weight:700;
+    }
+
+    .sub{
+      margin:0 0 18px;
+      font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+      color:var(--brown-2);
+      font-size: clamp(18px, 2.3vw, 26px);
+      letter-spacing:.02em;
+    }
+
+    .lead{
+      margin:0 auto 22px;
+      max-width: 760px;
+      color:var(--muted);
+      font-size: clamp(14px, 1.8vw, 18px);
+      line-height:1.45;
+    }
+
+    .player-stack{
+      margin: 18px auto 8px;
+      width:min(680px, 100%);
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      align-items:stretch;
+    }
+
+    #guidedDuration{
+      font-size:14px;
+      opacity:.8;
+    }
+
+    #guidedDuration::before{
+      content:"(";
+      font-size:14px;
+      opacity:.8;
+    }
+    #guidedDuration::after{
+      content:")";
+      font-size:14px;
+      opacity:.8;
+    }
+
+    #forestDuration{
+      font-size:14px;
+      opacity:.8;
+    }
+
+    #forestDuration::before{
+      content:"(";
+      font-size:14px;
+      opacity:.8;
+    }
+    #forestDuration::after{
+      content:")";
+      font-size:14px;
+      opacity:.8;
+    }
+
+    .player{
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.55);
+      background: rgba(255,255,255,.22);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow: 0 10px 24px rgba(50, 30, 20, .12);
+      overflow:hidden;
+    }
+
+    .player.primary{
+      background: linear-gradient(180deg, rgba(54,72,60,.95), rgba(44,58,49,.95));
+      color:#f2ede7;
+      border-color: rgba(255,255,255,.18);
+    }
+    .player.secondary{
+      background: linear-gradient(180deg, rgba(154,106,75,.92), rgba(127,85,60,.92));
+      color:#f6efe9;
+      border-color: rgba(255,255,255,.18);
+    }
+
+    .player-top{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:14px 16px;
+      font-weight:600;
+      letter-spacing:.02em;
+      justify-content:center;
+    }
+
+    .player-top .left{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      width:100%;
+      justify-content:center;
+    }
+
+    .player-top svg{
+      width:20px;height:20px;flex:0 0 auto;
+      opacity:.95;
+    }
+
+    .player-time{
+      opacity:.9;
+      font-weight:500;
+    }
+
+    .player-controls{
+      padding: 0 16px 14px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      justify-content:center;
+    }
+
+    .icon-btn{
+      appearance:none;
+      border:0;
+      background: rgba(255,255,255,.16);
+      color:inherit;
+      width:38px;height:38px;
+      border-radius: 999px;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease;
+    }
+    .icon-btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.22)}
+    .icon-btn:active{transform: translateY(0px) scale(.98)}
+    .icon-btn svg{width:18px;height:18px}
+
+    input[type="range"]{
+      -webkit-appearance:none;
+      appearance:none;
+      width:min(520px, 100%);
+      height:6px;
+      border-radius:999px;
+      background: rgba(255,255,255,.26);
+      outline:none;
+    }
+    input[type="range"]::-webkit-slider-thumb{
+      -webkit-appearance:none;
+      appearance:none;
+      width:16px;height:16px;border-radius:999px;
+      background: rgba(255,255,255,.92);
+      border:2px solid rgba(0,0,0,.08);
+      cursor:pointer;
+    }
+    input[type="range"]::-moz-range-thumb{
+      width:16px;height:16px;border-radius:999px;
+      background: rgba(255,255,255,.92);
+      border:2px solid rgba(0,0,0,.08);
+      cursor:pointer;
+    }
+
+    .steps{
+      margin: 38px auto 10px;
+      width:min(760px, 100%);
+      background: rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.45);
+      border-radius: var(--radius-lg);
+      padding: 18px 18px 14px;
+      text-align:left;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .step{
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      padding:10px 8px;
+      color:var(--ink);
+    }
+
+    .step + .step{
+      border-top:1px solid rgba(205,184,173,.55);
+    }
+
+    .step .ico{
+      width:34px;height:34px;
+      border-radius: 999px;
+      border:1px solid rgba(205,184,173,.75);
+      background: rgba(255,255,255,.25);
+      display:grid;
+      place-items:center;
+      flex:0 0 auto;
+      margin-top:1px;
+    }
+    .step .ico svg{width:18px;height:18px;opacity:.9}
+
+    .step .txt{
+      line-height:1.35;
+      font-size: clamp(14px, 1.7vw, 18px);
+    }
+    .step b{font-weight:700}
+    .step span{color:var(--muted)}
+
+    .closing{
+      margin: 18px 0 18px;
+      font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+      font-style: italic;
+      color: var(--muted);
+      font-size: clamp(16px, 2vw, 20px);
+    }
+
+    .cta{
+      display:flex;
+      justify-content:center;
+      margin: 10px 0 16px;
+    }
+
+    .btn{
+      appearance:none;
+      border:1px solid rgba(205,184,173,.95);
+      background: rgba(255,255,255,.22);
+      color: var(--ink);
+      padding: 14px 22px;
+      border-radius: 999px;
+      font-weight:600;
+      letter-spacing:.01em;
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease, box-shadow .12s ease;
+      box-shadow: 0 12px 24px rgba(50, 30, 20, .10);
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.30);
+      box-shadow: 0 16px 30px rgba(50, 30, 20, .14);
+    }
+    .btn:active{transform: translateY(0px) scale(.99)}
+
+    footer{
+      padding: 8px 0 18px;
+      text-align:center;
+      color: rgba(90, 70, 60, .85);
+      font-size: 13px;
+    }
+    footer a{
+      color: inherit;
+      text-decoration:none;
+      border-bottom:1px solid rgba(90, 70, 60, .35);
+    }
+    footer a:hover{border-bottom-color: rgba(90, 70, 60, .75)}
+    .dot{opacity:.6; padding:0 8px}
+
+    /* Lautstärke-Regler etwas schmaler */
+    #guidedVolume, #forestVolume{
+      width: 120px;
+    }
+
+    /* Volume Widget (Icon + dünner Slider wie im Screenshot) */
+.vol{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.vol-btn{
+  appearance:none;
+  border:0;
+  background: transparent;
+  color: inherit;
+  width:28px;
+  height:28px;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  padding:0;
+  opacity:.95;
+}
+
+.vol-btn svg{
+  width:22px;
+  height:22px;
+}
+
+/* Slider Track */
+.vol-range{
+  -webkit-appearance:none;
+  appearance:none;
+  width: 170px;
+  height: 4px;
+  border-radius:999px;
+  background: rgba(255,255,255,.45);
+  outline:none;
+}
+
+/* WebKit Thumb */
+.vol-range::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  appearance:none;
+  width:14px;
+  height:14px;
+  border-radius:999px;
+  background: rgba(255,255,255,.95);
+  border: 2px solid rgba(0,0,0,.12);
+  cursor:pointer;
+}
+
+/* Firefox Thumb */
+.vol-range::-moz-range-thumb{
+  width:14px;
+  height:14px;
+  border-radius:999px;
+  background: rgba(255,255,255,.95);
+  border: 2px solid rgba(0,0,0,.12);
+  cursor:pointer;
+}
+
+/* Firefox Track */
+.vol-range::-moz-range-track{
+  height:4px;
+  border-radius:999px;
+  background: rgba(255,255,255,.45);
+}
+
+/* Mobile etwas kürzer */
+@media (max-width: 520px){
+  .vol-range{ width: 130px; }
+}
+
+
+    /* Mobile */
+    @media (max-width: 520px){
+      .content{padding:28px 16px 18px}
+      .steps{padding:14px 14px 10px}
+      .player-controls{gap:10px}
+      .icon-btn{width:36px;height:36px}
+    }
+
+    @media (max-width: 520px){
+      #guidedVolume, #forestVolume{ width: 90px; }
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <main class="page" role="main">
+      <!-- SVG Illustration (Berge + Wald + Mond + Yogapose) -->
+      <svg class="hero-illustration" viewBox="0 0 980 1500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#f6ece6" stop-opacity="1"/>
+            <stop offset="1" stop-color="#e7d0c2" stop-opacity="1"/>
+          </linearGradient>
+
+          <linearGradient id="mount1" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#d7b9a8" stop-opacity=".65"/>
+            <stop offset="1" stop-color="#cda891" stop-opacity=".40"/>
+          </linearGradient>
+
+          <linearGradient id="mount2" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#caa38d" stop-opacity=".55"/>
+            <stop offset="1" stop-color="#b98a71" stop-opacity=".35"/>
+          </linearGradient>
+
+          <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#c29a83" stop-opacity=".65"/>
+            <stop offset="1" stop-color="#a87d62" stop-opacity=".75"/>
+          </linearGradient>
+
+          <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="1.6" />
+          </filter>
+
+          <symbol id="tree" viewBox="0 0 40 70">
+            <path d="M20 3 L7 26 H14 L4 44 H15 L6 60 H34 L25 44 H36 L26 26 H33 Z" fill="#2f3c33" opacity=".95"/>
+            <rect x="18" y="60" width="4" height="9" rx="1" fill="#2b241f" opacity=".7"/>
+          </symbol>
+        </defs>
+
+        <rect width="980" height="1500" fill="url(#sky)"/>
+
+        <!-- Mond -->
+        <g opacity=".22" filter="url(#soft)">
+          <circle cx="120" cy="520" r="72" fill="#fff"/>
+          <circle cx="142" cy="500" r="72" fill="#e7d0c2"/>
+        </g>
+
+        <!-- Berge -->
+        <path d="M-40 720 C180 600, 280 620, 420 690 C520 740, 620 670, 740 700 C860 730, 980 700, 1100 640 L1100 980 L-40 980 Z"
+              fill="url(#mount1)" opacity=".85"/>
+        <path d="M-40 800 C120 740, 250 760, 360 820 C480 890, 600 820, 720 840 C860 870, 980 850, 1100 780 L1100 1020 L-40 1020 Z"
+              fill="url(#mount2)" opacity=".85"/>
+
+        <!-- Boden / Nebel -->
+        <path d="M-40 930 C160 900, 300 930, 420 980 C560 1040, 700 990, 860 1010 C980 1030, 1030 1040, 1100 1020 L1100 1500 L-40 1500 Z"
+              fill="url(#ground)" opacity=".55"/>
+        <path d="M-40 1020 C200 980, 380 1030, 520 1080 C680 1140, 820 1100, 1100 1100 L1100 1500 L-40 1500 Z"
+              fill="#ffffff" opacity=".20"/>
+
+        <!-- Wald-Silhouette links/rechts -->
+        <g opacity=".38">
+          <use href="#tree" x="85"  y="760" width="36" height="62"/>
+          <use href="#tree" x="145" y="800" width="32" height="56"/>
+          <use href="#tree" x="210" y="770" width="40" height="70"/>
+          <use href="#tree" x="270" y="820" width="28" height="50"/>
+          <use href="#tree" x="320" y="790" width="34" height="60"/>
+          <use href="#tree" x="710" y="780" width="40" height="70"/>
+          <use href="#tree" x="770" y="820" width="32" height="56"/>
+          <use href="#tree" x="835" y="790" width="36" height="62"/>
+          <use href="#tree" x="895" y="830" width="28" height="50"/>
+        </g>
+
+        <!-- Yogapose (vereinfacht) -->
+        <g transform="translate(490 930)" opacity=".88">
+          <path d="M0 -130
+                   C 18 -130, 36 -112, 34 -96
+                   C 32 -78, 12 -66, 0 -66
+                   C -12 -66, -32 -78, -34 -96
+                   C -36 -112, -18 -130, 0 -130 Z"
+                fill="#6c3f2c" opacity=".75"/>
+          <path d="M-18 -54 C-10 -84, 10 -84, 18 -54
+                   C 30 -20, 24 30, 10 74
+                   C 4 92, -4 92, -10 74
+                   C -24 30, -30 -20, -18 -54 Z"
+                fill="#4b2f24" opacity=".85"/>
+          <path d="M-34 -90 C-60 -70, -66 -40, -44 -18" stroke="#4b2f24" stroke-width="10" stroke-linecap="round" fill="none" opacity=".8"/>
+          <path d="M34 -90 C60 -70, 66 -40, 44 -18" stroke="#4b2f24" stroke-width="10" stroke-linecap="round" fill="none" opacity=".8"/>
+          <path d="M-10 72 C-18 104, -8 134, 18 140" stroke="#4b2f24" stroke-width="10" stroke-linecap="round" fill="none" opacity=".85"/>
+          <path d="M10 72 C24 92, 42 104, 62 102" stroke="#4b2f24" stroke-width="10" stroke-linecap="round" fill="none" opacity=".85"/>
+        </g>
+      </svg>
+
+      <section class="content">
+        <div class="brand" aria-label="Moonshine Yoga">
+          <!-- <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15.6 2.8c-2.6 1-4.4 3.6-4.4 6.6 0 3.8 3 6.8 6.8 6.8 1.1 0 2.1-.2 3-.6-1.4 3.2-4.6 5.4-8.3 5.4C7.5 21 3 16.5 3 11.2 3 6.4 6.6 2.4 11.3 2c1.5-.1 3 .2 4.3.8z" fill="currentColor"/>
+            <path d="M20.2 5.2l.5 1.5 1.5.5-1.5.5-.5 1.5-.5-1.5-1.5-.5 1.5-.5.5-1.5z" fill="currentColor" opacity=".9"/>
+          </svg> -->
+          <span>BRENDRICK YOGA</span>
+        </div>
+
+        <h1>WALDRUHE</h1>
+        <p class="sub">Abendritual</p>
+        <p class="lead">
+          Zünde deine Tranquil Woods Kerze an, finde eine bequeme Position<br/>
+          und starte die Meditation.
+        </p>
+
+        <div class="player-stack" aria-label="Audio-Auswahl">
+          <!-- Primary player -->
+          <div class="player primary">
+            <div class="player-top">
+              <div class="left">
+                <!-- <svg viewBox="0 0 24 24" aria-hidden="true" onclick="playGuided()">
+                  <path d="M8 5v14l12-7z" fill="currentColor"/>
+                </svg> -->
+                
+                <span>Geführte Meditation</span>
+                <span class="player-time" id="guidedDuration">(—:—)</span>
+                  <audio id="guided" preload="metadata" playsinline>
+                    <source src="audio/waldruhe_meditation_abendritual.mp3" type="audio/mpeg">
+                  </audio>
+              </div>
+            </div>
+
+          <div class="player-controls">
+            <button class="icon-btn" type="button" id="guidedToggle" aria-label="Play/Pause">
+              <!-- Start-Icon (Play) -->
+              <svg id="guidedIconPlay" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M8 5v14l12-7z" fill="currentColor"/>
+              </svg>
+              <!-- Pause-Icon -->
+              <svg id="guidedIconPause" viewBox="0 0 24 24" aria-hidden="true" style="display:none">
+                <path d="M7 5h3v14H7zM14 5h3v14h-3z" fill="currentColor"/>
+              </svg>
+            </button>
+
+            <input type="range" id="guidedProgress" min="0" value="0" aria-label="Fortschritt" />
+            <div class="vol">
+              <button class="vol-btn" type="button" id="guidedMute" aria-label="Stumm/Laut">
+                <!-- Laut -->
+                <svg id="guidedVolOn" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M11 5 6.5 9H3v6h3.5L11 19V5z" fill="currentColor"/>
+                  <path d="M14.5 8.5a4 4 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M16.5 6a7 7 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+
+                <!-- Muted -->
+                <svg id="guidedVolOff" viewBox="0 0 24 24" aria-hidden="true" style="display:none">
+                  <path d="M11 5 6.5 9H3v6h3.5L11 19V5z" fill="currentColor"/>
+                  <path d="M15 9 19 13M19 9 15 13"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
+
+
+              <input
+                type="range"
+                id="guidedVolume"
+                class="vol-range"
+                min="0"
+                max="1"
+                step="0.01"
+                value="1"
+                aria-label="Lautstärke"
+              />
+            </div>
+
+
+
+            <div id="guidedTime" style="min-width:72px; text-align:right; opacity:.95;">0:00</div>
+          </div>
+        </div>
+
+          <!-- Secondary "button" -->
+          <div class="player secondary" role="button" tabindex="0" aria-label="Nur Waldklänge (30:00)">
+            <div class="player-top">
+              <div class="left">
+                <!-- <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3a7 7 0 0 0-7 7v7a3 3 0 0 0 6 0V11a2 2 0 0 1 4 0v6a3 3 0 0 0 6 0V10a7 7 0 0 0-7-7zm-4 7a4 4 0 0 1 8 0v7a1 1 0 0 1-2 0V11a4 4 0 0 0-8 0v6a1 1 0 0 1-2 0V10z" fill="currentColor"/>
+                </svg> -->
+                <span>Nur Waldklänge</span>
+                <span class="player-time" id="forestDuration">(—:—)</span>
+
+                  <audio id="forest" preload="metadata" playsinline>
+                    <source src="audio/waldgeraeusche.mp3" type="audio/mpeg">
+                  </audio>
+              </div>
+            </div>
+
+            <div class="player-controls">
+              <button class="icon-btn" type="button" id="forestToggle" aria-label="Play/Pause Waldklänge">
+                <!-- Play -->
+                <svg id="forestIconPlay" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M8 5v14l12-7z" fill="currentColor"/>
+                </svg>
+                <!-- Pause -->
+                <svg id="forestIconPause" viewBox="0 0 24 24" aria-hidden="true" style="display:none">
+                  <path d="M7 5h3v14H7zM14 5h3v14h-3z" fill="currentColor"/>
+                </svg>
+              </button>
+
+              <input type="range" id="forestProgress" min="0" value="0" aria-label="Fortschritt Waldklänge" />
+              <div class="vol">
+                <button class="vol-btn" type="button" id="forestMute" aria-label="Stumm/Laut">
+                  <!-- Laut -->
+                  <svg id="forestVolOn" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M11 5 6.5 9H3v6h3.5L11 19V5z" fill="currentColor"/>
+                    <path d="M14.5 8.5a4 4 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M16.5 6a7 7 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+
+                  <!-- Muted -->
+                  <svg id="forestVolOff" viewBox="0 0 24 24" aria-hidden="true" style="display:none">
+                    <path d="M11 5 6.5 9H3v6h3.5L11 19V5z" fill="currentColor"/>
+                    <path d="M15 9 19 13M19 9 15 13"
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </button>
+
+
+                <input
+                  type="range"
+                  id="forestVolume"
+                  class="vol-range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value="1"
+                  aria-label="Lautstärke"
+                />
+              </div>
+              <div id="forestTime" style="min-width:72px; text-align:right; opacity:.95;">0:00</div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="steps" aria-label="Ritual-Schritte">
+          <div class="step">
+            <div class="ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 3c3 2.1 5 4.7 5 7.6A5 5 0 0 1 7 10.6C7 7.7 9 5.1 12 3z" fill="currentColor" opacity=".9"/>
+                <path d="M6 20c2.6-2.2 5.3-3.3 6-3.3S15.4 17.8 18 20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" opacity=".7"/>
+              </svg>
+            </div>
+            <div class="txt">
+              <b>Kerze anzünden</b> &nbsp;–&nbsp; <span>Duft bewusst wahrnehmen</span>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="ico" aria-hidden="true">
+              <svg viewBox="0 0 64 64" aria-hidden="true">
+                <!-- Kopf -->
+                <circle cx="32" cy="14" r="6" fill="currentColor"/>
+
+                <!-- Oberkörper + Arme -->
+                <path fill="currentColor" d="
+                  M32 22
+                  C28 22 24.8 25.2 24.8 29.2
+                  V34
+                  C24.8 36.8 22.6 39 19.8 39
+                  H16.5
+                  C14.6 39 13.2 40.6 13.2 42.4
+                  C13.2 44.3 14.7 45.8 16.6 45.8
+                  H22
+                  C25.2 45.8 28.1 44.3 30 42
+                  C30.6 41.2 31.4 41.2 32 41.2
+                  C32.6 41.2 33.4 41.2 34 42
+                  C35.9 44.3 38.8 45.8 42 45.8
+                  H47.4
+                  C49.3 45.8 50.8 44.3 50.8 42.4
+                  C50.8 40.6 49.4 39 47.5 39
+                  H44.2
+                  C41.4 39 39.2 36.8 39.2 34
+                  V29.2
+                  C39.2 25.2 36 22 32 22
+                  Z
+                "/>
+
+                <!-- Beine (Lotus-Sitz) -->
+                <path fill="currentColor" d="
+                  M14 46
+                  C12 46 10.6 48 11.3 49.9
+                  C13.5 55.7 19.5 59 26.2 56.8
+                  C28.4 56.1 30.2 55 32 53.5
+                  C33.8 55 35.6 56.1 37.8 56.8
+                  C44.5 59 50.5 55.7 52.7 49.9
+                  C53.4 48 52 46 50 46
+                  H41.5
+                  C39.4 46 37.3 46.8 35.8 48.3
+                  L32 52.1
+                  L28.2 48.3
+                  C26.7 46.8 24.6 46 22.5 46
+                  Z
+                "/>
+              </svg>
+
+            </div>
+            <div class="txt">
+              <b>Hinlegen oder sitzen</b> &nbsp;–&nbsp; <span>Schultern weich werden lassen</span>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M10 8v8l7-4z" fill="currentColor" opacity=".9"/>
+                <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2" opacity=".7"/>
+              </svg>
+            </div>
+            <div class="txt">
+              <b>Play drücken</b> &nbsp;–&nbsp; <span>ruhig ein–und ausatmen</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="closing">Schön, dass du dir Zeit genommen hast.</div>
+
+        <!-- <div class="cta">
+          <button class="btn" type="button">Weitere Rituale entdecken</button>
+        </div> -->
+
+        <footer>
+          <a href="impressum/index.html" aria-label="Impressum">Impressum</a>
+          <span class="dot">•</span>
+          <a href="datenschutz/index.html" aria-label="Datenschutz">Datenschutz</a>
+          <span class="dot">•</span>
+          <a href="kontakt/index.html" aria-label="Kontakt">Kontakt</a>
+        </footer>
+      </section>
+    </main>
+  </div>
+
+<script>
+  // Elemente
+  const guided = document.getElementById('guided');
+  const guidedDurationEl = document.getElementById('guidedDuration');
+  const guidedToggle = document.getElementById('guidedToggle');
+  const guidedProgress = document.getElementById('guidedProgress');
+  const guidedTime = document.getElementById('guidedTime');
+  const iconPlay = document.getElementById('guidedIconPlay');
+  const iconPause = document.getElementById('guidedIconPause');
+
+  const forest = document.getElementById('forest');
+  const forestDurationEl = document.getElementById('forestDuration');
+  const forestToggle = document.getElementById('forestToggle');
+  const forestProgress = document.getElementById('forestProgress');
+  const forestTime = document.getElementById('forestTime');
+  const forestIconPlay = document.getElementById('forestIconPlay');
+  const forestIconPause = document.getElementById('forestIconPause');
+
+  // ===== Volume + Mute (SAUBER, EINMALIG) =====
+const guidedVolume = document.getElementById('guidedVolume');
+const forestVolume = document.getElementById('forestVolume');
+
+const guidedMute = document.getElementById('guidedMute');
+const guidedVolOn = document.getElementById('guidedVolOn');
+const guidedVolOff = document.getElementById('guidedVolOff');
+
+const forestMute = document.getElementById('forestMute');
+const forestVolOn = document.getElementById('forestVolOn');
+const forestVolOff = document.getElementById('forestVolOff');
+
+function updateMuteIcon(audio, iconOn, iconOff) {
+  if (!iconOn || !iconOff) return;
+  const muted = audio.muted || audio.volume === 0;
+  iconOn.style.display = muted ? 'none' : 'block';
+  iconOff.style.display = muted ? 'block' : 'none';
+}
+
+function setVolume(audio, slider, iconOn, iconOff) {
+  if (!slider) return;
+  const v = Number(slider.value);
+  audio.volume = v;
+  audio.muted = (v === 0) ? true : audio.muted; // bei 0 muten
+  if (v > 0 && audio.muted) {
+    // optional: wenn man hochzieht, automatisch entmuten:
+    audio.muted = false;
+  }
+  updateMuteIcon(audio, iconOn, iconOff);
+}
+
+// Initialwerte setzen + Icons syncen
+if (guidedVolume) guided.volume = Number(guidedVolume.value);
+if (forestVolume) forest.volume = Number(forestVolume.value);
+
+updateMuteIcon(guided, guidedVolOn, guidedVolOff);
+updateMuteIcon(forest, forestVolOn, forestVolOff);
+
+// Slider Events
+guidedVolume?.addEventListener('input', () => {
+  setVolume(guided, guidedVolume, guidedVolOn, guidedVolOff);
+});
+
+forestVolume?.addEventListener('input', () => {
+  setVolume(forest, forestVolume, forestVolOn, forestVolOff);
+});
+
+// Mute Toggle (merkt sich letzte Lautstärke)
+let guidedLastVol = guidedVolume ? Number(guidedVolume.value) : 1;
+let forestLastVol = forestVolume ? Number(forestVolume.value) : 1;
+
+guidedMute?.addEventListener('click', (e) => {
+  e.preventDefault();
+  if (!guidedVolume) return;
+
+  if (!guided.muted && guided.volume > 0) guidedLastVol = guided.volume;
+
+  guided.muted = !guided.muted;
+
+  // Optional: Slider visuell auf 0 beim muten
+  guidedVolume.value = guided.muted ? "0" : String(guidedLastVol || 1);
+  guided.volume = Number(guidedVolume.value);
+
+  updateMuteIcon(guided, guidedVolOn, guidedVolOff);
+});
+
+forestMute?.addEventListener('click', (e) => {
+  e.preventDefault();
+  if (!forestVolume) return;
+
+  if (!forest.muted && forest.volume > 0) forestLastVol = forest.volume;
+
+  forest.muted = !forest.muted;
+
+  forestVolume.value = forest.muted ? "0" : String(forestLastVol || 1);
+  forest.volume = Number(forestVolume.value);
+
+  updateMuteIcon(forest, forestVolOn, forestVolOff);
+});
+
+
+
+  function fmtTime(sec) {
+    if (!isFinite(sec)) return '0:00';
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60);
+    return `${m}:${String(s).padStart(2, '0')}`;
+  }
+
+  function setIcon(isPlaying) {
+    iconPlay.style.display = isPlaying ? 'none' : 'block';
+    iconPause.style.display = isPlaying ? 'block' : 'none';
+  }
+
+  function setForestIcon(isPlaying) {
+    forestIconPlay.style.display = isPlaying ? 'none' : 'block';
+    forestIconPause.style.display = isPlaying ? 'block' : 'none';
+  }
+
+
+  async function playGuided() {
+    // anderes Audio stoppen
+    if (forest) forest.pause();
+
+    try {
+      await guided.play();
+      setIcon(true);
+    } catch (e) {
+      // Wenn Browser Play blockt (passiert ohne User-Interaktion)
+      console.warn('Play wurde blockiert:', e);
+    }
+  }
+
+  async function toggleGuided() {
+    if (guided.paused) {
+      await playGuided();
+    } else {
+      guided.pause();
+      setIcon(false);
+    }
+  }
+
+  // Gesamtdauer setzen, sobald Metadaten geladen sind
+    guided.addEventListener('loadedmetadata', () => {
+    guidedDurationEl.textContent = fmtTime(guided.duration);
+  });
+  
+  // Play/Pause Button
+  guidedToggle.addEventListener('click', toggleGuided);
+
+  // Fortschritt updaten (sobald Metadaten da sind)
+  guided.addEventListener('loadedmetadata', () => {
+    guidedProgress.max = guided.duration || 0;
+    guidedTime.textContent = fmtTime(guided.currentTime);
+  });
+
+  guided.addEventListener('timeupdate', () => {
+    guidedProgress.value = guided.currentTime;
+    guidedTime.textContent = fmtTime(guided.currentTime);
+  });
+
+  guided.addEventListener('play', () => setIcon(true));
+  guided.addEventListener('pause', () => setIcon(false));
+  guided.addEventListener('ended', () => setIcon(false));
+
+  // Seek (scrubben)
+  guidedProgress.addEventListener('input', () => {
+    guided.currentTime = Number(guidedProgress.value);
+  });
+
+  // Defaults setzen (optional)
+  guided.volume = Number(guidedVolume?.value ?? 1);
+  forest.volume = Number(forestVolume?.value ?? 1);
+
+  // Beim Schieben Audio-Lautstärke setzen
+  guidedVolume?.addEventListener('input', () => {
+    guided.volume = Number(guidedVolume.value);
+  });
+
+  forestVolume?.addEventListener('input', () => {
+    forest.volume = Number(forestVolume.value);
+  });
+
+  guidedVolume?.addEventListener('input', () => {
+    const v = Number(guidedVolume.value);
+    guided.volume = v;
+    guided.muted = v === 0;
+  });
+
+  forestVolume?.addEventListener('input', () => {
+    const v = Number(forestVolume.value);
+    forest.volume = v;
+    forest.muted = v === 0;
+  });
+
+
+
+
+  async function playForest() {
+  // Guided stoppen
+  guided.pause();
+  setIcon(false);
+
+  try {
+    await forest.play();
+    setForestIcon(true);
+  } catch (e) {
+    console.warn('Forest Play blockiert:', e);
+  }
+}
+
+function toggleForest() {
+  if (forest.paused) {
+    playForest();
+  } else {
+    forest.pause();
+    setForestIcon(false);
+  }
+}
+
+// Dauer / Metadaten
+
+forest.addEventListener('loadedmetadata', () => {
+  if (forestDurationEl) forestDurationEl.textContent = fmtTime(forest.duration);
+  if (forestProgress) forestProgress.max = forest.duration || 0;
+  if (forestTime) forestTime.textContent = fmtTime(forest.currentTime);
+});
+
+
+// Fortschritt
+forest.addEventListener('timeupdate', () => {
+  forestProgress.value = forest.currentTime;
+  forestTime.textContent = fmtTime(forest.currentTime);
+});
+
+forest.addEventListener('play', () => setForestIcon(true));
+forest.addEventListener('pause', () => setForestIcon(false));
+forest.addEventListener('ended', () => setForestIcon(false));
+
+// Scrubben
+forestProgress.addEventListener('input', () => {
+  forest.currentTime = Number(forestProgress.value);
+});
+
+// Button
+forestToggle.addEventListener('click', (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  toggleForest();
+});
+
+
+</script>
+
+</body>
+</html>

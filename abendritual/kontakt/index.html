@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kontakt – Brendrick Yoga</title>
+  <link rel="stylesheet" href="/CSS/site.css" />
+</head>
+<body>
+  <div class="wrap">
+    <main class="page" role="main">
+      <svg class="hero-illustration" viewBox="0 0 980 300" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#f6ece6" stop-opacity="1"/>
+            <stop offset="1" stop-color="#e7d0c2" stop-opacity="1"/>
+          </linearGradient>
+        </defs>
+        <rect width="980" height="300" fill="url(#g)" opacity=".55"></rect>
+      </svg>
+
+      <section class="content">
+        <div class="brand">BRENDRICK YOGA</div>
+        <h1>Kontakt</h1>
+        <p class="sub">Schreib mir – ich melde mich so schnell wie möglich.</p>
+
+        <div class="card">
+          <h2>E-Mail</h2>
+          <p>
+            Am schnellsten erreichst du mich unter:
+            <a href="mailto:service@brendrick-yoga.de">service@brendrick-yoga.de</a>
+          </p>
+
+          <h2>Kontaktformular</h2>
+          <!-- <p class="sub" style="text-align:left; margin:0 0 8px;">
+            Hinweis: Dieses Formular sendet ohne Server-Script nicht automatisch ab. Du kannst es
+            entweder an einen Formular-Dienst anschließen oder ich baue dir ein kleines PHP-Formular.
+          </p> -->
+
+          <form id="contactForm">
+            <div class="form-row">
+              <div class="field">
+                <label for="name">Name</label>
+                <input id="name" name="name" autocomplete="name" required>
+              </div>
+              <div class="field">
+                <label for="email">E-Mail</label>
+                <input id="email" name="email" type="email" autocomplete="email" required>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="subject">Betreff</label>
+              <input id="subject" name="subject" required>
+            </div>
+
+            <div class="field">
+              <label for="message">Nachricht</label>
+              <textarea id="message" name="message" required></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button class="btn" type="submit">E-Mail vorbereiten</button>
+              <button class="btn" onclick="window.location.href='../'">Zurück</button>
+            </div>
+
+            <div class="note">
+              Mit dem Absenden werden deine Angaben zur Bearbeitung der Anfrage verarbeitet.
+              Weitere Infos findest du in der <a href="../datenschutz/">Datenschutzerklärung</a>.
+            </div>
+          </form>
+        </div>
+
+
+
+        <footer>
+          <a href="../impressum/">Impressum</a><span class="dot">•</span>
+          <a href="../datenschutz/">Datenschutz</a><span class="dot">•</span>
+          <a href="../kontakt/">Kontakt</a>
+        </footer>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // "Serverlos": öffnet Mailprogramm mit vorausgefüllter E-Mail
+    const form = document.getElementById('contactForm');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = encodeURIComponent(document.getElementById('name').value.trim());
+      const email = encodeURIComponent(document.getElementById('email').value.trim());
+      const subject = encodeURIComponent(document.getElementById('subject').value.trim());
+      const message = encodeURIComponent(document.getElementById('message').value.trim());
+
+      const body =
+        `Name: ${name}%0D%0A` +
+        `E-Mail: ${email}%0D%0A%0D%0A` +
+        `${message}`;
+
+      window.location.href = `mailto:hello@brendrick-yoga.de?subject=${subject}&body=${body}`;
+    });
+  </script>
+</body>
+</html>
