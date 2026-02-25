@@ -1,95 +1,132 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Datenschutz – Brendrick Yoga</title>
-  <link rel="stylesheet" href="/CSS/site.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/CSS/style_ar.css" />
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="apple-touch-icon" href="/favicons/apple-touch-icon.png" sizes="180x180">
+  <script src="/scripts/forest.js" defer></script>
 </head>
 <body>
-  <div class="wrap">
-    <main class="page" role="main">
-      <svg class="hero-illustration" viewBox="0 0 980 300" preserveAspectRatio="none" aria-hidden="true">
-        <defs>
-          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#f6ece6" stop-opacity="1"/>
-            <stop offset="1" stop-color="#e7d0c2" stop-opacity="1"/>
-          </linearGradient>
-        </defs>
-        <rect width="980" height="300" fill="url(#g)" opacity=".55"></rect>
-      </svg>
 
-      <section class="content">
-        <div class="brand">BRENDRICK YOGA</div>
-        <h1>Datenschutz</h1>
-        <p class="sub">Informationen zur Verarbeitung personenbezogener Daten</p>
+  <canvas id="bg-canvas"></canvas>
+  <div class="grain"></div>
+  <div class="ambient" id="ambient"></div>
 
-        <div class="card">
-          <h2>1. Verantwortlicher</h2>
-          <p>
-            <strong>Gabin Noubissi</strong><br>
-            Wengertsteige 74, 71088 Holzgerlingen, Deutschland<br>
-            E-Mail: <a href="mailto:service@brendrick-yoga.de">service@brendrick-yoga.de</a>
-          </p>
+  <div class="wrapper">
 
-          <h2>2. Zugriffsdaten / Server-Logfiles</h2>
-          <p>
-            Beim Besuch unserer Website verarbeitet der Hosting-Provider technisch notwendige Daten
-            (z. B. IP-Adresse, Zeitpunkt, aufgerufene Seite, User-Agent), um die Website auszuliefern
-            und die Sicherheit zu gewährleisten.
-          </p>
+    <a href="../" class="back-link">
+      <span class="back-arrow"></span>
+      Zurück zur Meditation
+    </a>
 
-          <h2>3. Kontaktaufnahme</h2>
-          <p>
-            Wenn du uns per E-Mail oder über das Kontaktformular kontaktierst, verarbeiten wir deine Angaben
-            zur Bearbeitung der Anfrage und für mögliche Anschlussfragen.
-          </p>
+    <header class="page-header">
+      <div class="eyebrow">Brendrick Yoga · Rechtliches</div>
+      <h1 class="page-title">Daten<em>schutz</em></h1>
+      <p class="page-sub">Informationen zur Verarbeitung personenbezogener Daten</p>
+    </header>
 
-          <h2>4. Cookies</h2>
-          <p>
-            Diese Website kann technisch notwendige Cookies einsetzen. Sofern darüber hinaus Cookies
-            (z. B. Tracking) verwendet werden, erfolgt dies nur mit entsprechender Einwilligung.
-          </p>
+    <div class="content-card">
 
-          <h2>5. Deine Rechte</h2>
-          <ul>
-            <li>Auskunft über deine gespeicherten Daten</li>
-            <li>Berichtigung unrichtiger Daten</li>
-            <li>Löschung oder Einschränkung der Verarbeitung</li>
-            <li>Datenübertragbarkeit</li>
-            <li>Widerspruch gegen Verarbeitung</li>
-            <li>Widerruf erteilter Einwilligungen</li>
-            <li>Beschwerde bei einer Aufsichtsbehörde</li>
-          </ul>
+      <div class="section">
+        <span class="section-num">01</span>
+        <h2>Verantwortlicher</h2>
+        <p>
+          <strong>Gabin Noubissi</strong><br>
+          Wengertsteige 74, 71088 Holzgerlingen, Deutschland<br>
+          E-Mail: <a href="mailto:service@brendrick-yoga.de">service@brendrick-yoga.de</a>
+        </p>
+      </div>
 
-          <h2>6. SSL-/TLS-Verschlüsselung</h2>
-          <p>
-            Diese Seite nutzt aus Sicherheitsgründen eine SSL-/TLS-Verschlüsselung.
-          </p>
+      <div class="section">
+        <span class="section-num">02</span>
+        <h2>Zugriffsdaten &amp; Server-Logfiles</h2>
+        <p>
+          Beim Besuch unserer Website verarbeitet der Hosting-Provider technisch notwendige Daten
+          (z.&nbsp;B. IP-Adresse, Zeitpunkt, aufgerufene Seite, User-Agent), um die Website
+          auszuliefern und die Sicherheit zu gewährleisten.
+        </p>
+      </div>
 
-          <h2>7. Drittanbieter-Dienste</h2>
-          <p>
-            Falls du Dienste wie Analytics, eingebettete Videos, Schriftarten oder Newsletter-Tools nutzt,
-            müssen diese hier konkret benannt und beschrieben werden (Zweck, Rechtsgrundlage, Empfänger, Speicherdauer).
-          </p>
+      <div class="section">
+        <span class="section-num">03</span>
+        <h2>Kontaktaufnahme</h2>
+        <p>
+          Wenn du uns per E-Mail oder über das Kontaktformular kontaktierst, verarbeiten wir
+          deine Angaben zur Bearbeitung der Anfrage und für mögliche Anschlussfragen.
+        </p>
+      </div>
 
-          <h2>8. Stand</h2>
-          <p>
-            Stand: <em>16.01.2026</em>
-          </p>
+      <div class="section">
+        <span class="section-num">04</span>
+        <h2>Cookies</h2>
+        <p>
+          Diese Website kann technisch notwendige Cookies einsetzen. Sofern darüber hinaus
+          Cookies (z.&nbsp;B. Tracking) verwendet werden, erfolgt dies nur mit entsprechender
+          Einwilligung.
+        </p>
+      </div>
+
+      <div class="section">
+        <span class="section-num">05</span>
+        <h2>Deine Rechte</h2>
+        <ul>
+          <li>Auskunft über deine gespeicherten Daten</li>
+          <li>Berichtigung unrichtiger Daten</li>
+          <li>Löschung oder Einschränkung der Verarbeitung</li>
+          <li>Datenübertragbarkeit</li>
+          <li>Widerspruch gegen Verarbeitung</li>
+          <li>Widerruf erteilter Einwilligungen</li>
+          <li>Beschwerde bei einer Aufsichtsbehörde</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <span class="section-num">06</span>
+        <h2>SSL-/TLS-Verschlüsselung</h2>
+        <p>
+          Diese Seite nutzt aus Sicherheitsgründen eine SSL-/TLS-Verschlüsselung. Eine
+          verschlüsselte Verbindung erkennst du am Schloss-Symbol in deiner Browserzeile.
+        </p>
+      </div>
+
+      <div class="section">
+        <span class="section-num">07</span>
+        <h2>Drittanbieter-Dienste</h2>
+        <p>
+          Falls du Dienste wie Analytics, eingebettete Videos, Schriftarten oder Newsletter-Tools
+          nutzt, müssen diese hier konkret benannt und beschrieben werden (Zweck, Rechtsgrundlage,
+          Empfänger, Speicherdauer).
+        </p>
+      </div>
+
+      <div class="section">
+        <span class="section-num">08</span>
+        <h2>Stand</h2>
+        <div class="badge">
+          🌿 <span>Letzte Aktualisierung:</span> 16. Januar 2026
         </div>
+      </div>
 
-        <div class="nav">
-          <button class="btn" onclick="window.location.href='../'">Zurück</button>
-        </div>
+    </div>
 
-        <footer>
-          <a href="../impressum/">Impressum</a><span class="dot">•</span>
-          <a href="../datenschutz/">Datenschutz</a><span class="dot">•</span>
-          <a href="../kontakt/">Kontakt</a>
-        </footer>
-      </section>
-    </main>
+    <a href="../" class="btn-back">← Zurück zur Meditation</a>
+
+    <footer>
+      <a href="../impressum/">Impressum</a>
+      <span class="footer-sep">·</span>
+      <a href="../datenschutz/">Datenschutz</a>
+      <span class="footer-sep">·</span>
+      <a href="../kontakt/">Kontakt</a>
+    </footer>
+
   </div>
+
+  <script src="forest-bg.js"></script>
 </body>
 </html>

@@ -1,1090 +1,1162 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Brendrick Yoga - Waldruhe</title>
-  <meta name="description" content="Geführtes Abendritual – Zünde deine Tranquil Woods Duftkerze an, finde eine bequeme Position und starte die Meditation." />
-
-  <!-- Optional: elegante Serif / Sans (system fallback, ohne externe Fonts) -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WALDRUHE – Duftkerze mit geführter Meditation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="apple-touch-icon" href="/favicons/apple-touch-icon.png" sizes="180x180">
   <style>
-    :root{
-      --bg-1:#f3e7df;
-      --bg-2:#e9d4c5;
-      --ink:#3a2a22;
-      --muted:#6a5346;
-      --green:#3c4a3e;
-      --green-2:#2f3c33;
-      --brown:#9a6a4b;
-      --brown-2:#7f553c;
-      --card:#f6ede6cc;
-      --stroke:#cdb8ad;
-      --shadow: 0 18px 40px rgba(40, 24, 18, .18);
-      --radius: 18px;
-      --radius-lg: 22px;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --forest-deep:   #0D1A0F;
+      --forest-dark:   #132016;
+      --forest-mid:    #1E3322;
+      --forest-light:  #2A4A30;
+      --moss:          #4A7A50;
+      --sage:          #8AAE80;
+      --mist:          #C8DBC0;
+      --cream:         #F2EDE4;
+      --amber:         #C8943A;
+      --amber-glow:    rgba(200,148,58,0.15);
+      --text-main:     #E8F0E0;
+      --text-muted:    rgba(200,218,192,0.55);
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      color:var(--ink);
-      background:
-        radial-gradient(1200px 900px at 50% 15%, rgba(255,255,255,.55), rgba(255,255,255,0) 60%),
-        linear-gradient(180deg, var(--bg-1), var(--bg-2));
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
-      letter-spacing:.2px;
+    html, body {
+      height: 100%;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--forest-deep);
+      color: var(--text-main);
+      overflow-x: hidden;
     }
 
-    /* subtile Papier-Textur (CSS-only) */
-    body:before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      opacity:.18;
-      background:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");
-      mix-blend-mode:multiply;
+    /* ===== CANVAS BACKGROUND ===== */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
     }
 
-    .wrap{
-      min-height:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:28px 18px 36px;
+    /* ===== GRAIN OVERLAY ===== */
+    .grain {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
     }
 
-    .page{
-      width:min(980px, 100%);
-      border-radius:28px;
-      overflow:hidden;
-      background: linear-gradient(180deg, rgba(255,255,255,.38), rgba(255,255,255,.18));
-      box-shadow: var(--shadow);
-      border:1px solid rgba(255,255,255,.45);
-      position:relative;
+    /* ===== MAIN WRAPPER ===== */
+    .wrapper {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
     }
 
-    /* Illustration-Hintergrund (SVG) */
-    .hero-illustration{
-      position:absolute;
-      inset:0;
-      z-index:0;
-      opacity:.95;
+    /* ===== CANDLE FLAME ===== */
+    .candle-scene {
+      position: relative;
+      margin-bottom: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .content{
-      position:relative;
-      z-index:1;
-      padding:34px 26px 22px;
-      text-align:center;
+    .flame-container {
+      position: relative;
+      width: 48px;
+      height: 70px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
     }
 
-    .brand{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      font-weight:600;
-      letter-spacing:.14em;
-      color:var(--brown-2);
-      text-transform:uppercase;
-      font-size:13px;
+    .flame-glow {
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,148,58,0.5) 0%, transparent 70%);
+      animation: glowPulse 2.8s ease-in-out infinite;
     }
-    .brand svg{width:22px;height:22px;opacity:.95}
-
-    h1{
-      margin:18px 0 8px;
-      font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
-      font-size: clamp(44px, 5.2vw, 72px);
-      letter-spacing:.04em;
-      color:var(--green);
-      font-weight:700;
+    .flame-glow-outer {
+      position: absolute;
+      top: -10px; left: 50%;
+      transform: translateX(-50%);
+      width: 120px; height: 80px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,148,58,0.12) 0%, transparent 70%);
+      animation: glowPulse 2.8s ease-in-out infinite 0.3s;
     }
-
-    .sub{
-      margin:0 0 18px;
-      font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
-      color:var(--brown-2);
-      font-size: clamp(18px, 2.3vw, 26px);
-      letter-spacing:.02em;
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+      50% { opacity: 1; transform: translateX(-50%) scale(1.15); }
     }
 
-    .lead{
-      margin:0 auto 22px;
-      max-width: 760px;
-      color:var(--muted);
-      font-size: clamp(14px, 1.8vw, 18px);
-      line-height:1.45;
+    .flame {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 26px;
+      background: linear-gradient(to top, #E8640A 0%, #F5A030 40%, #FFD580 80%, #FFF5CC 100%);
+      border-radius: 50% 50% 30% 30% / 60% 60% 40% 40%;
+      animation: flicker 1.6s ease-in-out infinite;
+      filter: blur(0.5px);
+    }
+    @keyframes flicker {
+      0%   { transform: translateX(-50%) scaleX(1)    scaleY(1)    skewX(0deg); }
+      20%  { transform: translateX(-50%) scaleX(0.88) scaleY(1.06) skewX(-2deg); }
+      40%  { transform: translateX(-50%) scaleX(1.06) scaleY(0.93) skewX(1deg); }
+      60%  { transform: translateX(-50%) scaleX(0.92) scaleY(1.04) skewX(2deg); }
+      80%  { transform: translateX(-50%) scaleX(1.04) scaleY(0.97) skewX(-1deg); }
+      100% { transform: translateX(-50%) scaleX(1)    scaleY(1)    skewX(0deg); }
+    }
+    .flame-inner {
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 12px;
+      background: linear-gradient(to top, rgba(255,255,255,0.9), rgba(255,220,100,0.4));
+      border-radius: 50% 50% 30% 30%;
+      animation: flickerInner 1.4s ease-in-out infinite 0.2s;
+    }
+    @keyframes flickerInner {
+      0%, 100% { opacity: 0.9; transform: translateX(-50%) scaleY(1); }
+      50% { opacity: 0.7; transform: translateX(-50%) scaleY(0.85); }
     }
 
-    .player-stack{
-      margin: 18px auto 8px;
-      width:min(680px, 100%);
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-      align-items:stretch;
+    .wick {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 10px;
+      background: #1a1008;
+      border-radius: 1px;
     }
 
-    #guidedDuration{
-      font-size:14px;
-      opacity:.8;
+    .candle-body-wrap {
+      position: relative;
+      width: 56px;
+      height: 110px;
+      margin-top: 0;
+    }
+    .candle-body {
+      width: 56px;
+      height: 110px;
+      background: linear-gradient(160deg, #F2EDE4 0%, #E0D8C8 35%, #C8C0A8 100%);
+      border-radius: 3px 3px 2px 2px;
+      box-shadow:
+        4px 8px 24px rgba(0,0,0,0.5),
+        inset -5px 0 16px rgba(0,0,0,0.12),
+        0 0 0 1px rgba(255,255,255,0.06);
+      position: relative;
+      overflow: hidden;
+    }
+    .candle-body::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 8px;
+      width: 2px;
+      height: 100%;
+      /* background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent); */
+      border-radius: 1px;
+    }
+    .candle-label-area {
+      position: absolute;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      white-space: nowrap;
+    }
+    .candle-label-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      color: var(--forest-mid);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .candle-pool {
+      position: absolute;
+      top: 4px; left: 50%;
+      transform: translateX(-50%);
+      width: 36px;
+      height: 12px;
+      background: radial-gradient(ellipse at center, rgba(232,200,140,0.6) 0%, rgba(200,168,100,0.3) 70%, transparent 100%);
+      border-radius: 50%;
+      animation: poolShimmer 3s ease-in-out infinite;
+    }
+    @keyframes poolShimmer {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
     }
 
-    #guidedDuration::before{
-      content:"(";
-      font-size:14px;
-      opacity:.8;
+    /* ===== HEADER TEXT ===== */
+    .page-header {
+      text-align: center;
+      margin-bottom: 56px;
     }
-    #guidedDuration::after{
-      content:")";
-      font-size:14px;
-      opacity:.8;
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.4s;
     }
-
-    #forestDuration{
-      font-size:14px;
-      opacity:.8;
+    .title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(52px, 9vw, 88px);
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      color: var(--cream);
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.6s;
     }
-
-    #forestDuration::before{
-      content:"(";
-      font-size:14px;
-      opacity:.8;
-    }
-    #forestDuration::after{
-      content:")";
-      font-size:14px;
-      opacity:.8;
-    }
-
-    .player{
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.55);
-      background: rgba(255,255,255,.22);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      box-shadow: 0 10px 24px rgba(50, 30, 20, .12);
-      overflow:hidden;
-    }
-
-    .player.primary{
-      background: linear-gradient(180deg, rgba(54,72,60,.95), rgba(44,58,49,.95));
-      color:#f2ede7;
-      border-color: rgba(255,255,255,.18);
-    }
-    .player.secondary{
-      background: linear-gradient(180deg, rgba(154,106,75,.92), rgba(127,85,60,.92));
-      color:#f6efe9;
-      border-color: rgba(255,255,255,.18);
-    }
-
-    .player-top{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:14px 16px;
-      font-weight:600;
-      letter-spacing:.02em;
-      justify-content:center;
-    }
-
-    .player-top .left{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      width:100%;
-      justify-content:center;
-    }
-
-    .player-top svg{
-      width:20px;height:20px;flex:0 0 auto;
-      opacity:.95;
-    }
-
-    .player-time{
-      opacity:.9;
-      font-weight:500;
-    }
-
-    .player-controls{
-      padding: 0 16px 14px;
-      display:flex;
-      align-items:center;
-      gap:12px;
-      justify-content:center;
-    }
-
-    .icon-btn{
-      appearance:none;
-      border:0;
-      background: rgba(255,255,255,.16);
-      color:inherit;
-      width:38px;height:38px;
-      border-radius: 999px;
-      display:grid;
-      place-items:center;
-      cursor:pointer;
-      transition: transform .12s ease, background .12s ease;
-    }
-    .icon-btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.22)}
-    .icon-btn:active{transform: translateY(0px) scale(.98)}
-    .icon-btn svg{width:18px;height:18px}
-
-    input[type="range"]{
-      -webkit-appearance:none;
-      appearance:none;
-      width:min(520px, 100%);
-      height:6px;
-      border-radius:999px;
-      background: rgba(255,255,255,.26);
-      outline:none;
-    }
-    input[type="range"]::-webkit-slider-thumb{
-      -webkit-appearance:none;
-      appearance:none;
-      width:16px;height:16px;border-radius:999px;
-      background: rgba(255,255,255,.92);
-      border:2px solid rgba(0,0,0,.08);
-      cursor:pointer;
-    }
-    input[type="range"]::-moz-range-thumb{
-      width:16px;height:16px;border-radius:999px;
-      background: rgba(255,255,255,.92);
-      border:2px solid rgba(0,0,0,.08);
-      cursor:pointer;
-    }
-
-    .steps{
-      margin: 38px auto 10px;
-      width:min(760px, 100%);
-      background: rgba(255,255,255,.18);
-      border:1px solid rgba(255,255,255,.45);
-      border-radius: var(--radius-lg);
-      padding: 18px 18px 14px;
-      text-align:left;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-    }
-
-    .step{
-      display:flex;
-      gap:14px;
-      align-items:flex-start;
-      padding:10px 8px;
-      color:var(--ink);
-    }
-
-    .step + .step{
-      border-top:1px solid rgba(205,184,173,.55);
-    }
-
-    .step .ico{
-      width:34px;height:34px;
-      border-radius: 999px;
-      border:1px solid rgba(205,184,173,.75);
-      background: rgba(255,255,255,.25);
-      display:grid;
-      place-items:center;
-      flex:0 0 auto;
-      margin-top:1px;
-    }
-    .step .ico svg{width:18px;height:18px;opacity:.9}
-
-    .step .txt{
-      line-height:1.35;
-      font-size: clamp(14px, 1.7vw, 18px);
-    }
-    .step b{font-weight:700}
-    .step span{color:var(--muted)}
-
-    .closing{
-      margin: 18px 0 18px;
-      font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+    .title em {
       font-style: italic;
-      color: var(--muted);
-      font-size: clamp(16px, 2vw, 20px);
+      color: var(--sage);
+    }
+    .subtitle {
+      margin-top: 20px;
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.75;
+      max-width: 440px;
+      margin-left: auto;
+      margin-right: auto;
+      font-weight: 300;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.8s;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    .cta{
-      display:flex;
-      justify-content:center;
-      margin: 10px 0 16px;
+    /* ===== PLAYER CARD ===== */
+    .players-container {
+      width: 100%;
+      max-width: 540px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 1s;
     }
 
-    .btn{
-      appearance:none;
-      border:1px solid rgba(205,184,173,.95);
-      background: rgba(255,255,255,.22);
-      color: var(--ink);
-      padding: 14px 22px;
-      border-radius: 999px;
-      font-weight:600;
-      letter-spacing:.01em;
-      cursor:pointer;
-      transition: transform .12s ease, background .12s ease, box-shadow .12s ease;
-      box-shadow: 0 12px 24px rgba(50, 30, 20, .10);
+    .player-card {
+      background: rgba(30, 51, 34, 0.6);
+      border: 1px solid rgba(138, 174, 128, 0.15);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      padding: 28px 32px;
+      transition: border-color 0.4s;
+      position: relative;
+      overflow: hidden;
     }
-    .btn:hover{
-      transform: translateY(-1px);
-      background: rgba(255,255,255,.30);
-      box-shadow: 0 16px 30px rgba(50, 30, 20, .14);
+    .player-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(138,174,128,0.05) 0%, transparent 60%);
+      pointer-events: none;
     }
-    .btn:active{transform: translateY(0px) scale(.99)}
+    .player-card.playing {
+      border-color: rgba(138, 174, 128, 0.4);
+    }
+    .player-card.playing::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 2px;
+      width: 100%;
+      background: linear-gradient(to right, transparent, var(--moss), var(--sage), transparent);
+      animation: shimmerLine 2s ease-in-out infinite;
+    }
+    @keyframes shimmerLine {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
 
-    footer{
-      padding: 8px 0 18px;
-      text-align:center;
-      color: rgba(90, 70, 60, .85);
+    .player-top {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+
+    .player-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--forest-light);
+      border: 1px solid rgba(138,174,128,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+      transition: background 0.3s;
+    }
+    .player-card.playing .player-icon {
+      background: rgba(74, 122, 80, 0.4);
+    }
+
+    .player-info { flex: 1; }
+    .player-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--cream);
+      margin-bottom: 3px;
+    }
+    .player-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+    }
+
+    .player-duration {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--sage);
+      letter-spacing: 0.04em;
+      opacity: 0;
+    }
+
+    /* ===== CONTROLS ===== */
+    .player-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-play {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 1.5px solid var(--sage);
+      background: transparent;
+      color: var(--sage);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .btn-play:hover {
+      background: var(--moss);
+      border-color: var(--mist);
+      color: var(--cream);
+    }
+    .btn-play.playing {
+      background: rgba(74,122,80,0.3);
+      border-color: var(--mist);
+      color: var(--cream);
+    }
+    .btn-play svg {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.2s;
+    }
+    .btn-play:hover svg { transform: scale(1.1); }
+
+    /* Ripple on play */
+    .btn-play.playing::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 1px solid rgba(138,174,128,0.3);
+      animation: ripplePlay 2s ease-out infinite;
+    }
+    @keyframes ripplePlay {
+      0% { transform: scale(1); opacity: 0.6; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+
+    .progress-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 3px;
+      background: rgba(138,174,128,0.15);
+      border-radius: 2px;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(to right, var(--moss), var(--sage));
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.1s linear;
+      position: relative;
+    }
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      right: -2px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--mist);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .progress-bar:hover .progress-fill::after { opacity: 1; }
+
+    .time-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Volume */
+    .volume-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .volume-icon {
+      font-size: 14px;
+      color: var(--text-muted);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .volume-slider {
+      -webkit-appearance: none;
+      width: 64px;
+      height: 3px;
+      border-radius: 2px;
+      background: rgba(138,174,128,0.2);
+      outline: none;
+      cursor: pointer;
+    }
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--sage);
+      cursor: pointer;
+    }
+    .volume-slider::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--sage);
+      cursor: pointer;
+      border: none;
+    }
+
+    /* ===== WAVEFORM VISUALISER ===== */
+    .waveform {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      height: 24px;
+    }
+    .wave-bar {
+      width: 3px;
+      border-radius: 2px;
+      background: var(--moss);
+      opacity: 0.4;
+      transform-origin: center;
+    }
+    .player-card.playing .wave-bar {
+      animation: waveAnim 1.2s ease-in-out infinite;
+      opacity: 0.8;
+    }
+    .wave-bar:nth-child(1)  { height: 8px;  animation-delay: 0s; }
+    .wave-bar:nth-child(2)  { height: 16px; animation-delay: 0.1s; }
+    .wave-bar:nth-child(3)  { height: 10px; animation-delay: 0.2s; }
+    .wave-bar:nth-child(4)  { height: 20px; animation-delay: 0.15s; }
+    .wave-bar:nth-child(5)  { height: 14px; animation-delay: 0.05s; }
+    .wave-bar:nth-child(6)  { height: 24px; animation-delay: 0.25s; }
+    .wave-bar:nth-child(7)  { height: 12px; animation-delay: 0.1s; }
+    .wave-bar:nth-child(8)  { height: 18px; animation-delay: 0.2s; }
+    .wave-bar:nth-child(9)  { height: 10px; animation-delay: 0.3s; }
+    .wave-bar:nth-child(10) { height: 16px; animation-delay: 0.15s; }
+    .wave-bar:nth-child(11) { height: 8px;  animation-delay: 0.05s; }
+    .wave-bar:nth-child(12) { height: 14px; animation-delay: 0.2s; }
+    @keyframes waveAnim {
+      0%, 100% { transform: scaleY(0.4); }
+      50%       { transform: scaleY(1); }
+    }
+
+    /* ===== HINT SECTION ===== */
+    .hint-box {
+      width: 100%;
+      max-width: 540px;
+      margin-top: 32px;
+      padding: 28px 32px;
+      border-left: 2px solid var(--moss);
+      background: rgba(20, 40, 22, 0.4);
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 1.2s;
+    }
+    .hint-title {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 18px;
+    }
+    .hint-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .hint-step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .step-circle {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1px solid var(--moss);
+      color: var(--sage);
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-weight: 500;
+    }
+    .step-content {}
+    .step-heading {
       font-size: 13px;
+      font-weight: 500;
+      color: var(--text-main);
+      margin-bottom: 2px;
     }
-    footer a{
-      color: inherit;
-      text-decoration:none;
-      border-bottom:1px solid rgba(90, 70, 60, .35);
-    }
-    footer a:hover{border-bottom-color: rgba(90, 70, 60, .75)}
-    .dot{opacity:.6; padding:0 8px}
-
-    /* Lautstärke-Regler etwas schmaler */
-    #guidedVolume, #forestVolume{
-      width: 120px;
+    .step-body {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
     }
 
-    /* Volume Widget (Icon + dünner Slider wie im Screenshot) */
-.vol{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.vol-btn{
-  appearance:none;
-  border:0;
-  background: transparent;
-  color: inherit;
-  width:28px;
-  height:28px;
-  display:grid;
-  place-items:center;
-  cursor:pointer;
-  padding:0;
-  opacity:.95;
-}
-
-.vol-btn svg{
-  width:22px;
-  height:22px;
-}
-
-/* Slider Track */
-.vol-range{
-  -webkit-appearance:none;
-  appearance:none;
-  width: 170px;
-  height: 4px;
-  border-radius:999px;
-  background: rgba(255,255,255,.45);
-  outline:none;
-}
-
-/* WebKit Thumb */
-.vol-range::-webkit-slider-thumb{
-  -webkit-appearance:none;
-  appearance:none;
-  width:14px;
-  height:14px;
-  border-radius:999px;
-  background: rgba(255,255,255,.95);
-  border: 2px solid rgba(0,0,0,.12);
-  cursor:pointer;
-}
-
-/* Firefox Thumb */
-.vol-range::-moz-range-thumb{
-  width:14px;
-  height:14px;
-  border-radius:999px;
-  background: rgba(255,255,255,.95);
-  border: 2px solid rgba(0,0,0,.12);
-  cursor:pointer;
-}
-
-/* Firefox Track */
-.vol-range::-moz-range-track{
-  height:4px;
-  border-radius:999px;
-  background: rgba(255,255,255,.45);
-}
-
-.hint{
-  margin: 10px auto 0;
-  max-width: 760px;
-  color: rgba(58,42,34,.78);
-  font-size: 14px;
-  line-height: 1.4;
-}
-@media (max-width: 520px){
-  .hint{ font-size: 13px; }
-}
-
-/* Mobile etwas kürzer */
-@media (max-width: 520px){
-  .vol-range{ width: 130px; }
-}
-
-
-    /* Mobile */
-    @media (max-width: 520px){
-      .content{padding:28px 16px 18px}
-      .steps{padding:14px 14px 10px}
-      .player-controls{gap:10px}
-      .icon-btn{width:36px;height:36px}
+    /* ===== DUAL PLAY NOTE ===== */
+    .dual-note {
+      width: 100%;
+      max-width: 540px;
+      margin-top: 12px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 1.3s;
+    }
+    .dual-note span {
+      color: var(--sage);
     }
 
-    @media (max-width: 520px){
-      #guidedVolume, #forestVolume{ width: 90px; }
+    /* ===== SIGN OFF ===== */
+    .signoff {
+      margin-top: 56px;
+      text-align: center;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 1.5s;
+    }
+    .signoff-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+    .signoff-line {
+      width: 40px;
+      height: 1px;
+      background: var(--moss);
+      margin: 16px auto;
+    }
+    .signoff-name {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sage);
     }
 
-    /* ===== Responsive Improvements (Tablet + Handy) ===== */
+    /* ===== FOOTER ===== */
+    footer {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 11px;
+      color: rgba(138,174,128,0.35);
+      letter-spacing: 0.1em;
+    }
+    footer a {
+      color: rgba(138,174,128,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    footer a:hover { color: var(--sage); }
+    footer .sep { margin: 0 12px; }
 
-    /* Player Controls: darf umbrechen */
-    .player-controls{
-      flex-wrap: wrap;
+    /* ===== AMBIENT DOTS ===== */
+    .ambient {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .dot {
+      position: absolute;
+      border-radius: 50%;
+      animation: floatDot linear infinite;
+      opacity: 0;
+    }
+    @keyframes floatDot {
+      0%   { opacity: 0; transform: translateY(0) scale(1); }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.6; }
+      100% { opacity: 0; transform: translateY(-60vh) scale(0.4); }
     }
 
-    /* Progress soll flexibel wachsen */
-    #guidedProgress, #forestProgress{
-      flex: 1 1 260px;
-      min-width: 160px;
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 600px) {
+      .player-card { padding: 22px 20px; }
+      .hint-box { padding: 22px 20px; }
+      .volume-slider { width: 48px; }
     }
-
-    /* Volume-Block darf schrumpfen */
-    .vol{
-      flex: 0 1 auto;
+    .site-logo {
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 0 1px rgba(138,174,128,0.5));
+      z-index: 20;
+      scale: 2.5;
     }
-
-    /* Time stabil, aber nicht zu breit */
-    #guidedTime, #forestTime{
-      flex: 0 0 auto;
-      min-width: 56px !important;
-    }
-
-    .site-logo{
-      display:block;
-      width: clamp(90px, 14vw, 140px);
-      height:auto;
-      margin: 30px auto 10px;
-      transition: transform .3s ease, opacity .3s ease;
-    }
-
-    .site-logo:hover{
-      transform: scale(1.05);
-      opacity: 1;
-    }
-
-
-    /* Tablet: etwas kompakter */
-    @media (max-width: 900px){
-      .wrap{ padding: 22px 14px 28px; }
-      .content{ padding: 28px 18px 18px; }
-      .page{ border-radius: 22px; }
-      .player-stack{ width: min(720px, 100%); }
-      .steps{ margin-top: 28px; }
-    }
-
-    /* Handy: Controls in 2–3 Zeilen, nichts überläuft */
-    @media (max-width: 560px){
-      h1{ font-size: clamp(34px, 9vw, 54px); }
-      .sub{ font-size: clamp(16px, 4.6vw, 22px); }
-      .lead{ font-size: 15px; line-height: 1.5; }
-
-      .content{ padding: 22px 14px 16px; }
-      .page{ border-radius: 18px; }
-      .player-top{ padding: 12px 12px; }
-      .player-controls{
-        padding: 0 12px 12px;
-        gap: 10px;
-        justify-content: flex-start;
-      }
-
-      /* Reihenfolge auf Handy */
-      #guidedToggle, #forestToggle{ order: 1; }
-      #guidedTime, #forestTime{ order: 2; margin-left: auto; text-align:right; }
-      #guidedProgress, #forestProgress{ order: 3; flex: 1 1 100%; width: 100%; }
-      .vol{ order: 4; width: 100%; justify-content: center; }
-
-      /* Volume-Slider etwas kürzer */
-      .vol-range{ width: min(220px, 65vw); }
-
-      /* Buttons minimal kleiner */
-      .icon-btn{ width: 36px; height: 36px; }
-      .vol-btn{ width: 26px; height: 26px; }
-      .vol-btn svg{ width: 20px; height: 20px; }
-      }
-
-      /* Sehr kleine Geräte */
-      @media (max-width: 380px){
-        .vol-range{ width: min(190px, 62vw); }
-        .hint{ font-size: 12.5px; }
-      }
-
   </style>
-</head>
-
 <body>
-  <div class="wrap">
-    <main class="page" role="main">
-      <!-- SVG Illustration (Berge + Wald + Mond + Yogapose) -->
-      <svg class="hero-illustration" viewBox="0 0 980 1500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <defs>
-          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#f6ece6" stop-opacity="1"/>
-            <stop offset="1" stop-color="#e7d0c2" stop-opacity="1"/>
-          </linearGradient>
+  <canvas id="bg-canvas"></canvas>
+  <div class="grain"></div>
+  <div class="ambient" id="ambient"></div>
 
-          <linearGradient id="mount1" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" stop-color="#d7b9a8" stop-opacity=".65"/>
-            <stop offset="1" stop-color="#cda891" stop-opacity=".40"/>
-          </linearGradient>
+  <div class="wrapper">
+    <!-- Candle -->
+    <div class="candle-scene" style="opacity:0; animation: fadeUp 0.9s ease forwards 0.2s;">
+      <div class="flame-container">
+        <div class="flame-glow-outer"></div>
+        <div class="flame-glow"></div>
+        <div class="flame">
+          <div class="flame-inner"></div>
+        </div>
+        <div class="wick"></div>
+      </div>
+      <div class="candle-body-wrap">
+        <div class="candle-body">
+          <div class="candle-pool"></div>
+          <div class="candle-label-area">
+            <div class="candle-label-name"><img src="/images/logo.png" alt="Brendrick Yoga Logo" class="site-logo" /></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-          <linearGradient id="mount2" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" stop-color="#caa38d" stop-opacity=".55"/>
-            <stop offset="1" stop-color="#b98a71" stop-opacity=".35"/>
-          </linearGradient>
+    <!-- Header -->
+    <header class="page-header">
+      <div class="eyebrow">Tranquil Woods · Duftkerze</div>
+      <h1 class="title">WALD<em>RUHE</em></h1>
+      <p class="subtitle">
+        Zünde deine Kerze an, finde eine bequeme Position<br>und lass den Wald zu dir kommen.
+      </p>
+    </header>
 
-          <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#c29a83" stop-opacity=".65"/>
-            <stop offset="1" stop-color="#a87d62" stop-opacity=".75"/>
-          </linearGradient>
+    <!-- Players -->
+    <div class="players-container">
 
-          <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="1.6" />
-          </filter>
-
-          <symbol id="tree" viewBox="0 0 40 70">
-            <path d="M20 3 L7 26 H14 L4 44 H15 L6 60 H34 L25 44 H36 L26 26 H33 Z" fill="#2f3c33" opacity=".95"/>
-            <rect x="18" y="60" width="4" height="9" rx="1" fill="#2b241f" opacity=".7"/>
-          </symbol>
-        </defs>
-
-        <rect width="980" height="1500" fill="url(#sky)"/>
-
-        <!-- Mond -->
-        <g opacity=".22" filter="url(#soft)">
-          <circle cx="120" cy="520" r="72" fill="#fff"/>
-          <circle cx="142" cy="500" r="72" fill="#e7d0c2"/>
-        </g>
-
-        <!-- Berge -->
-        <path d="M-40 720 C180 600, 280 620, 420 690 C520 740, 620 670, 740 700 C860 730, 980 700, 1100 640 L1100 980 L-40 980 Z"
-              fill="url(#mount1)" opacity=".85"/>
-        <path d="M-40 800 C120 740, 250 760, 360 820 C480 890, 600 820, 720 840 C860 870, 980 850, 1100 780 L1100 1020 L-40 1020 Z"
-              fill="url(#mount2)" opacity=".85"/>
-
-        <!-- Boden / Nebel -->
-        <path d="M-40 930 C160 900, 300 930, 420 980 C560 1040, 700 990, 860 1010 C980 1030, 1030 1040, 1100 1020 L1100 1500 L-40 1500 Z"
-              fill="url(#ground)" opacity=".55"/>
-        <path d="M-40 1020 C200 980, 380 1030, 520 1080 C680 1140, 820 1100, 1100 1100 L1100 1500 L-40 1500 Z"
-              fill="#ffffff" opacity=".20"/>
-
-        <!-- Wald-Silhouette links/rechts -->
-        <g opacity=".1">
-          <use href="#tree" x="85"  y="760" width="36" height="62"/>
-          <use href="#tree" x="145" y="800" width="32" height="56"/>
-          <use href="#tree" x="210" y="770" width="40" height="70"/>
-          <use href="#tree" x="270" y="820" width="28" height="50"/>
-          <use href="#tree" x="320" y="790" width="34" height="60"/>
-          <use href="#tree" x="710" y="780" width="40" height="70"/>
-          <use href="#tree" x="770" y="820" width="32" height="56"/>
-          <use href="#tree" x="835" y="790" width="36" height="62"/>
-          <use href="#tree" x="895" y="830" width="28" height="50"/>
-        </g>
-
-        <!-- Yogapose (vereinfacht) -->
-         
-        
-      </svg>
-      <section class="content">
-        <div class="brand" aria-label="Moonshine Yoga">
-          <!-- <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M15.6 2.8c-2.6 1-4.4 3.6-4.4 6.6 0 3.8 3 6.8 6.8 6.8 1.1 0 2.1-.2 3-.6-1.4 3.2-4.6 5.4-8.3 5.4C7.5 21 3 16.5 3 11.2 3 6.4 6.6 2.4 11.3 2c1.5-.1 3 .2 4.3.8z" fill="currentColor"/>
-            <path d="M20.2 5.2l.5 1.5 1.5.5-1.5.5-.5 1.5-.5-1.5-1.5-.5 1.5-.5.5-1.5z" fill="currentColor" opacity=".9"/>
-          </svg> -->
-          <!-- <span>BRENDRICK YOGA</span> -->
-          <img src="images/logo.svg" alt="Brendrick Yoga Logo" class="site-logo" />
-
+      <!-- Player 1 -->
+      <div class="player-card" id="card1">
+        <div class="player-top">
+          <div class="player-icon">🎙️</div>
+          <div class="player-info">
+            <div class="player-title">Geführte Meditation</div>
+            <div class="player-desc">Sinnesreise · Tiefenentspannung</div>
+          </div>
+          <div id="dur1" class="player-duration">—:——</div>
         </div>
 
-        <h1>WALDRUHE</h1>
-        <p class="sub">Abendritual</p>
-        <p class="lead">
-          Zünde deine <i>Tranquil Woods</i> Duftkerze an, finde eine bequeme Position<br/>
-          und starte die Meditation.
-        </p>
+        <div class="player-controls">
+          <button class="btn-play" id="btn1" aria-label="Play / Pause">
+            <svg id="icon1" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </button>
 
-        <div class="player-stack" aria-label="Audio-Auswahl">
-          <!-- Primary player -->
-          <div class="player primary">
-            <div class="player-top">
-              <div class="left">
-                <!-- <svg viewBox="0 0 24 24" aria-hidden="true" onclick="playGuided()">
-                  <path d="M8 5v14l12-7z" fill="currentColor"/>
-                </svg> -->
-                
-                <span>Geführte Meditation</span>
-                <span class="player-time" id="guidedDuration">(—:—)</span>
-                  <audio id="guided" preload="metadata" playsinline>
-                    <source src="audio/meditation_wald.mp3" type="audio/mpeg">
-                  </audio>
+          <div class="progress-wrap">
+            <div class="progress-bar" id="bar1">
+              <div class="progress-fill" id="fill1"></div>
+            </div>
+            <div class="time-row">
+              <span id="cur1">0:00</span>
+              <div class="waveform" id="wave1">
+                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
               </div>
+              <span id="rem1">0:00</span>
             </div>
+          </div>
 
-          <div class="player-controls">
-            <button class="icon-btn" type="button" id="guidedToggle" aria-label="Play/Pause">
-              <!-- Start-Icon (Play) -->
-              <svg id="guidedIconPlay" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M8 5v14l12-7z" fill="currentColor"/>
-              </svg>
-              <!-- Pause-Icon -->
-              <svg id="guidedIconPause" viewBox="0 0 24 24" aria-hidden="true" style="display:none">
-                <path d="M7 5h3v14H7zM14 5h3v14h-3z" fill="currentColor"/>
-              </svg>
-            </button>
-
-            <input type="range" id="guidedProgress" min="0" value="0" aria-label="Fortschritt" />
-            <div class="vol">
-              <button class="vol-btn" type="button" id="guidedMute" aria-label="Stumm/Laut">
-                <!-- Laut -->
-                <svg id="guidedVolOn" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M11 5 6.5 9H3v6h3.5L11 19V5z" fill="currentColor"/>
-                  <path d="M14.5 8.5a4 4 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M16.5 6a7 7 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-
-                <!-- Muted -->
-                <svg id="guidedVolOff" viewBox="0 0 24 24" aria-hidden="true" style="display:none">
-                  <path d="M11 5 6.5 9H3v6h3.5L11 19V5z" fill="currentColor"/>
-                  <path d="M15 9 19 13M19 9 15 13"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-              </button>
-
-
-              <input
-                type="range"
-                id="guidedVolume"
-                class="vol-range"
-                min="0"
-                max="1"
-                step="0.01"
-                value="1"
-                aria-label="Lautstärke"
-              />
-            </div>
-
-
-
-            <div id="guidedTime" style="min-width:72px; text-align:right; opacity:.95;">0:00</div>
+          <div class="volume-wrap">
+            <span class="volume-icon" id="mute1" aria-label="Mute">🔊</span>
+            <input class="volume-slider" id="vol1" type="range" min="0" max="1" step="0.01" value="1" />
           </div>
         </div>
 
-          <!-- Secondary "button" -->
-          <div class="player secondary" aria-label="Waldklänge">
-            <div class="player-top">
-              <div class="left">
-                <!-- <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 3a7 7 0 0 0-7 7v7a3 3 0 0 0 6 0V11a2 2 0 0 1 4 0v6a3 3 0 0 0 6 0V10a7 7 0 0 0-7-7zm-4 7a4 4 0 0 1 8 0v7a1 1 0 0 1-2 0V11a4 4 0 0 0-8 0v6a1 1 0 0 1-2 0V10z" fill="currentColor"/>
-                </svg> -->
-                <span>Waldklänge</span>
-                <span class="player-time" id="forestDuration">(—:—)</span>
+        <audio id="audio1" preload="metadata" playsinline>
+          <source src="audio/meditation_wald.mp3" type="audio/mpeg">
+        </audio>
+      </div>
 
-                  <audio id="forest" preload="metadata" playsinline>
-                    <source src="audio/waldklaenge.mp3" type="audio/mpeg">
-                  </audio>
+      <!-- Player 2 -->
+      <div class="player-card" id="card2">
+        <div class="player-top">
+          <div class="player-icon">🌲</div>
+          <div class="player-info">
+            <div class="player-title">Waldklänge</div>
+            <div class="player-desc">Atmosphäre · Binaural Sounds</div>
+          </div>
+          <div id="dur2" class="player-duration">—:——</div>
+        </div>
+
+        <div class="player-controls">
+          <button class="btn-play" id="btn2" aria-label="Play / Pause">
+            <svg id="icon2" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </button>
+
+          <div class="progress-wrap">
+            <div class="progress-bar" id="bar2">
+              <div class="progress-fill" id="fill2"></div>
+            </div>
+            <div class="time-row">
+              <span id="cur2">0:00</span>
+              <div class="waveform" id="wave2">
+                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
               </div>
-            </div>
-
-            <div class="player-controls">
-              <button class="icon-btn" type="button" id="forestToggle" aria-label="Play/Pause Waldklänge">
-                <!-- Play -->
-                <svg id="forestIconPlay" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M8 5v14l12-7z" fill="currentColor"/>
-                </svg>
-                <!-- Pause -->
-                <svg id="forestIconPause" viewBox="0 0 24 24" aria-hidden="true" style="display:none">
-                  <path d="M7 5h3v14H7zM14 5h3v14h-3z" fill="currentColor"/>
-                </svg>
-              </button>
-
-              <input type="range" id="forestProgress" min="0" value="0" aria-label="Fortschritt Waldklänge" />
-              <div class="vol">
-                <button class="vol-btn" type="button" id="forestMute" aria-label="Stumm/Laut">
-                  <!-- Laut -->
-                  <svg id="forestVolOn" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M11 5 6.5 9H3v6h3.5L11 19V5z" fill="currentColor"/>
-                    <path d="M14.5 8.5a4 4 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M16.5 6a7 7 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-
-                  <!-- Muted -->
-                  <svg id="forestVolOff" viewBox="0 0 24 24" aria-hidden="true" style="display:none">
-                    <path d="M11 5 6.5 9H3v6h3.5L11 19V5z" fill="currentColor"/>
-                    <path d="M15 9 19 13M19 9 15 13"
-                          stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                </button>
-
-
-                <input
-                  type="range"
-                  id="forestVolume"
-                  class="vol-range"
-                  min="0"
-                  max="1"
-                  step="0.01"
-                  value="1"
-                  aria-label="Lautstärke"
-                />
-              </div>
-              <div id="forestTime" style="min-width:72px; text-align:right; opacity:.95;">0:00</div>
-            </div>
-
-          </div>
-          <p class="hint">
-            <b> Hinweis: </b> Starte die geführte Meditation oder die Waldklänge – oder spiele beides gleichzeitig für mehr Atmosphäre.
-          </p>
-
-        </div>
-
-        <div class="steps" aria-label="Ritual-Schritte">
-          <div class="step">
-            <div class="ico" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path d="M12 3c3 2.1 5 4.7 5 7.6A5 5 0 0 1 7 10.6C7 7.7 9 5.1 12 3z" fill="currentColor" opacity=".9"/>
-                <path d="M6 20c2.6-2.2 5.3-3.3 6-3.3S15.4 17.8 18 20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" opacity=".7"/>
-              </svg>
-            </div>
-            <div class="txt">
-              <b>Kerze anzünden</b> &nbsp;–&nbsp; <span>Duft bewusst wahrnehmen</span>
+              <span id="rem2">0:00</span>
             </div>
           </div>
 
-          <div class="step">
-            <div class="ico" aria-hidden="true">
-              <svg viewBox="0 0 64 64" aria-hidden="true">
-                <!-- Kopf -->
-                <circle cx="32" cy="14" r="6" fill="currentColor"/>
-
-                <!-- Oberkörper + Arme -->
-                <path fill="currentColor" d="
-                  M32 22
-                  C28 22 24.8 25.2 24.8 29.2
-                  V34
-                  C24.8 36.8 22.6 39 19.8 39
-                  H16.5
-                  C14.6 39 13.2 40.6 13.2 42.4
-                  C13.2 44.3 14.7 45.8 16.6 45.8
-                  H22
-                  C25.2 45.8 28.1 44.3 30 42
-                  C30.6 41.2 31.4 41.2 32 41.2
-                  C32.6 41.2 33.4 41.2 34 42
-                  C35.9 44.3 38.8 45.8 42 45.8
-                  H47.4
-                  C49.3 45.8 50.8 44.3 50.8 42.4
-                  C50.8 40.6 49.4 39 47.5 39
-                  H44.2
-                  C41.4 39 39.2 36.8 39.2 34
-                  V29.2
-                  C39.2 25.2 36 22 32 22
-                  Z
-                "/>
-
-                <!-- Beine (Lotus-Sitz) -->
-                <path fill="currentColor" d="
-                  M14 46
-                  C12 46 10.6 48 11.3 49.9
-                  C13.5 55.7 19.5 59 26.2 56.8
-                  C28.4 56.1 30.2 55 32 53.5
-                  C33.8 55 35.6 56.1 37.8 56.8
-                  C44.5 59 50.5 55.7 52.7 49.9
-                  C53.4 48 52 46 50 46
-                  H41.5
-                  C39.4 46 37.3 46.8 35.8 48.3
-                  L32 52.1
-                  L28.2 48.3
-                  C26.7 46.8 24.6 46 22.5 46
-                  Z
-                "/>
-              </svg>
-
-            </div>
-            <div class="txt">
-              <b>Hinlegen oder sitzen</b> &nbsp;–&nbsp; <span>Schultern weich werden lassen</span>
-            </div>
-          </div>
-
-          <div class="step">
-            <div class="ico" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path d="M10 8v8l7-4z" fill="currentColor" opacity=".9"/>
-                <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2" opacity=".7"/>
-              </svg>
-            </div>
-            <div class="txt">
-              <b>Play drücken</b> &nbsp;–&nbsp; <span>ruhig ein–und ausatmen</span>
-            </div>
+          <div class="volume-wrap">
+            <span class="volume-icon" id="mute2" aria-label="Mute">🔊</span>
+            <input class="volume-slider" id="vol2" type="range" min="0" max="1" step="0.01" value="0.7" />
           </div>
         </div>
 
-        <div class="closing">Schön, dass du dir Zeit genommen hast.</div>
+        <audio id="audio2" preload="metadata" playsinline>
+          <source src="audio/waldklaenge.mp3" type="audio/mpeg">
+        </audio>
+      </div>
+    </div>
 
-        <!-- <div class="cta">
-          <button class="btn" type="button">Weitere Rituale entdecken</button>
-        </div> -->
+    <div class="dual-note">
+      <span>Tipp:</span> Starte beide Player gleichzeitig –<br>
+      die Waldklänge schaffen eine tiefe Atmosphäre für die Meditation.
+    </div>
 
-        <footer>
-          <a href="impressum/index.html" aria-label="Impressum">Impressum</a>
-          <span class="dot">•</span>
-          <a href="datenschutz/index.html" aria-label="Datenschutz">Datenschutz</a>
-          <span class="dot">•</span>
-          <a href="kontakt/index.html" aria-label="Kontakt">Kontakt</a>
-        </footer>
-      </section>
-    </main>
+     <!-- Ritual Steps -->
+    <div class="hint-box">
+      <div class="hint-title">Dein Ritual</div>
+      <div class="hint-steps">
+        <div class="hint-step">
+          <div class="step-circle">1</div>
+          <div class="step-content">
+            <div class="step-heading">Kerze anzünden</div>
+            <div class="step-body">Nimm dir einen Moment, den Duft bewusst wahrzunehmen.</div>
+          </div>
+        </div>
+        <div class="hint-step">
+          <div class="step-circle">2</div>
+          <div class="step-content">
+            <div class="step-heading">Position finden</div>
+            <div class="step-body">Hinlegen oder bequem sitzen. Schultern bewusst fallen lassen.</div>
+          </div>
+        </div>
+        <div class="hint-step">
+          <div class="step-circle">3</div>
+          <div class="step-content">
+            <div class="step-heading">Play drücken</div>
+            <div class="step-body">Tief einatmen, langsam ausatmen. Lass den Wald zu dir kommen.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sign Off -->
+    <div class="signoff">
+      <div class="signoff-text">„Schön, dass du dir Zeit genommen hast."</div>
+      <div class="signoff-line"></div>
+      <div class="signoff-name">Brendrick-Yoga</div>
+    </div>
+
   </div>
 
-<script>
-  // Elemente
-  const guided = document.getElementById('guided');
-  const guidedDurationEl = document.getElementById('guidedDuration');
-  const guidedToggle = document.getElementById('guidedToggle');
-  const guidedProgress = document.getElementById('guidedProgress');
-  const guidedTime = document.getElementById('guidedTime');
-  const iconPlay = document.getElementById('guidedIconPlay');
-  const iconPause = document.getElementById('guidedIconPause');
+  <footer>
+    <a href="impressum/">Impressum</a>
+    <span class="sep">·</span>
+    <a href="datenschutz/">Datenschutz</a>
+    <span class="sep">·</span>
+    <a href="kontakt/">Kontakt</a>
+  </footer>
+  </div>
 
-  const forest = document.getElementById('forest');
-  const forestDurationEl = document.getElementById('forestDuration');
-  const forestToggle = document.getElementById('forestToggle');
-  const forestProgress = document.getElementById('forestProgress');
-  const forestTime = document.getElementById('forestTime');
-  const forestIconPlay = document.getElementById('forestIconPlay');
-  const forestIconPause = document.getElementById('forestIconPause');
+  <script>
+    // ===== FOREST CANVAS BACKGROUND =====
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H;
 
-  // ===== Volume + Mute (SAUBER, EINMALIG) =====
-const guidedVolume = document.getElementById('guidedVolume');
-const forestVolume = document.getElementById('forestVolume');
-
-const guidedMute = document.getElementById('guidedMute');
-const guidedVolOn = document.getElementById('guidedVolOn');
-const guidedVolOff = document.getElementById('guidedVolOff');
-
-const forestMute = document.getElementById('forestMute');
-const forestVolOn = document.getElementById('forestVolOn');
-const forestVolOff = document.getElementById('forestVolOff');
-
-function updateMuteIcon(audio, iconOn, iconOff) {
-  if (!iconOn || !iconOff) return;
-  const muted = audio.muted || audio.volume === 0;
-  iconOn.style.display = muted ? 'none' : 'block';
-  iconOff.style.display = muted ? 'block' : 'none';
-}
-
-function setVolume(audio, slider, iconOn, iconOff) {
-  if (!slider) return;
-  const v = Number(slider.value);
-  audio.volume = v;
-  audio.muted = (v === 0) ? true : audio.muted; // bei 0 muten
-  if (v > 0 && audio.muted) {
-    // optional: wenn man hochzieht, automatisch entmuten:
-    audio.muted = false;
-  }
-  updateMuteIcon(audio, iconOn, iconOff);
-}
-
-// Initialwerte setzen + Icons syncen
-if (guidedVolume) guided.volume = Number(guidedVolume.value);
-if (forestVolume) forest.volume = Number(forestVolume.value);
-
-updateMuteIcon(guided, guidedVolOn, guidedVolOff);
-updateMuteIcon(forest, forestVolOn, forestVolOff);
-
-// Slider Events
-guidedVolume?.addEventListener('input', () => {
-  setVolume(guided, guidedVolume, guidedVolOn, guidedVolOff);
-});
-
-forestVolume?.addEventListener('input', () => {
-  setVolume(forest, forestVolume, forestVolOn, forestVolOff);
-});
-
-// Mute Toggle (merkt sich letzte Lautstärke)
-let guidedLastVol = guidedVolume ? Number(guidedVolume.value) : 1;
-let forestLastVol = forestVolume ? Number(forestVolume.value) : 1;
-
-guidedMute?.addEventListener('click', (e) => {
-  e.preventDefault();
-  if (!guidedVolume) return;
-
-  if (!guided.muted && guided.volume > 0) guidedLastVol = guided.volume;
-
-  guided.muted = !guided.muted;
-
-  // Optional: Slider visuell auf 0 beim muten
-  guidedVolume.value = guided.muted ? "0" : String(guidedLastVol || 1);
-  guided.volume = Number(guidedVolume.value);
-
-  updateMuteIcon(guided, guidedVolOn, guidedVolOff);
-});
-
-forestMute?.addEventListener('click', (e) => {
-  e.preventDefault();
-  if (!forestVolume) return;
-
-  if (!forest.muted && forest.volume > 0) forestLastVol = forest.volume;
-
-  forest.muted = !forest.muted;
-
-  forestVolume.value = forest.muted ? "0" : String(forestLastVol || 1);
-  forest.volume = Number(forestVolume.value);
-
-  updateMuteIcon(forest, forestVolOn, forestVolOff);
-});
-
-
-
-  function fmtTime(sec) {
-    if (!isFinite(sec)) return '0:00';
-    const m = Math.floor(sec / 60);
-    const s = Math.floor(sec % 60);
-    return `${m}:${String(s).padStart(2, '0')}`;
-  }
-
-  function setIcon(isPlaying) {
-    iconPlay.style.display = isPlaying ? 'none' : 'block';
-    iconPause.style.display = isPlaying ? 'block' : 'none';
-  }
-
-  function setForestIcon(isPlaying) {
-    forestIconPlay.style.display = isPlaying ? 'none' : 'block';
-    forestIconPause.style.display = isPlaying ? 'block' : 'none';
-  }
-
-
-  async function playGuided() {
-  try {
-    await guided.play();
-    setIcon(true);
-  } catch (e) {
-    console.warn('Play wurde blockiert:', e);
-  }
-}
-
-
-  async function toggleGuided() {
-    if (guided.paused) {
-      await playGuided();
-    } else {
-      guided.pause();
-      setIcon(false);
+    function resizeCanvas() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+      drawForest();
     }
-  }
+    window.addEventListener('resize', resizeCanvas);
 
-  // Gesamtdauer setzen, sobald Metadaten geladen sind
-    guided.addEventListener('loadedmetadata', () => {
-    guidedDurationEl.textContent = fmtTime(guided.duration);
-  });
-  
-  // Play/Pause Button
-  guidedToggle.addEventListener('click', toggleGuided);
+    function drawForest() {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, W, H);
 
-  // Fortschritt updaten (sobald Metadaten da sind)
-  guided.addEventListener('loadedmetadata', () => {
-    guidedProgress.max = guided.duration || 0;
-    guidedTime.textContent = fmtTime(guided.currentTime);
-  });
+      const sky = ctx.createLinearGradient(0, 0, 0, H);
+      sky.addColorStop(0,   '#050E07');
+      sky.addColorStop(0.4, '#0D1A0F');
+      sky.addColorStop(0.7, '#132016');
+      sky.addColorStop(1,   '#1A2E1D');
+      ctx.fillStyle = sky;
+      ctx.fillRect(0, 0, W, H);
 
-  guided.addEventListener('timeupdate', () => {
-    guidedProgress.value = guided.currentTime;
-    guidedTime.textContent = fmtTime(guided.currentTime);
-  });
+      for (let i = 0; i < 80; i++) {
+        const x = (Math.sin(i * 137.5) * 0.5 + 0.5) * W;
+        const y = (Math.sin(i * 97.3)  * 0.5 + 0.5) * H * 0.5;
+        const r = Math.random() * 1.2 + 0.3;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(200,220,190,${0.1 + Math.random()*0.25})`;
+        ctx.fill();
+      }
 
-  guided.addEventListener('play', () => setIcon(true));
-  guided.addEventListener('pause', () => setIcon(false));
-  guided.addEventListener('ended', () => setIcon(false));
+      const moonX = W * 0.78, moonY = H * 0.12, moonR = 36;
+      const moonGlow = ctx.createRadialGradient(moonX, moonY, 0, moonX, moonY, moonR * 6);
+      moonGlow.addColorStop(0,   'rgba(200,220,180,0.12)');
+      moonGlow.addColorStop(0.3, 'rgba(180,200,160,0.06)');
+      moonGlow.addColorStop(1,   'transparent');
+      ctx.fillStyle = moonGlow;
+      ctx.fillRect(0, 0, W, H);
 
-  // Seek (scrubben)
-  guidedProgress.addEventListener('input', () => {
-    guided.currentTime = Number(guidedProgress.value);
-  });
+      ctx.beginPath();
+      ctx.arc(moonX, moonY, moonR, 0, Math.PI * 2);
+      const moonDisc = ctx.createRadialGradient(moonX - 6, moonY - 6, 4, moonX, moonY, moonR);
+      moonDisc.addColorStop(0,   'rgba(240,248,230,0.85)');
+      moonDisc.addColorStop(0.6, 'rgba(200,220,180,0.7)');
+      moonDisc.addColorStop(1,   'rgba(160,185,140,0.4)');
+      ctx.fillStyle = moonDisc;
+      ctx.fill();
 
+      const mist = ctx.createLinearGradient(0, H * 0.55, 0, H * 0.78);
+      mist.addColorStop(0,   'transparent');
+      mist.addColorStop(0.5, 'rgba(30,60,32,0.18)');
+      mist.addColorStop(1,   'rgba(20,40,22,0.08)');
+      ctx.fillStyle = mist;
+      ctx.fillRect(0, 0, W, H);
 
+      function drawTree(ctx, x, baseY, w, h) {
+        ctx.beginPath();
+        ctx.moveTo(x, baseY);
+        ctx.lineTo(x - w * 0.5, baseY);
+        ctx.lineTo(x - w * 0.6, baseY - h * 0.3);
+        ctx.lineTo(x - w * 0.4, baseY - h * 0.28);
+        ctx.lineTo(x - w * 0.5, baseY - h * 0.55);
+        ctx.lineTo(x - w * 0.3, baseY - h * 0.52);
+        ctx.lineTo(x - w * 0.38, baseY - h * 0.75);
+        ctx.lineTo(x - w * 0.15, baseY - h * 0.72);
+        ctx.lineTo(x, baseY - h);
+        ctx.lineTo(x + w * 0.15, baseY - h * 0.72);
+        ctx.lineTo(x + w * 0.38, baseY - h * 0.75);
+        ctx.lineTo(x + w * 0.3, baseY - h * 0.52);
+        ctx.lineTo(x + w * 0.5, baseY - h * 0.55);
+        ctx.lineTo(x + w * 0.4, baseY - h * 0.28);
+        ctx.lineTo(x + w * 0.6, baseY - h * 0.3);
+        ctx.lineTo(x + w * 0.5, baseY);
+        ctx.closePath();
+        ctx.fill();
+      }
 
-async function playForest() {
-  try {
-    await forest.play();
-    setForestIcon(true);
-  } catch (e) {
-    console.warn('Forest Play blockiert:', e);
-  }
-}
+      function drawTreeLayer(density, baseY, minH, color, spread, treeW) {
+        ctx.fillStyle = color;
+        const count = Math.max(1, Math.floor(W / (treeW * 1.4) * density));
+        for (let i = 0; i <= count; i++) {
+          const x = (i / count) * W * (1 + spread) - W * spread * 0.5;
+          const h = minH * (0.7 + Math.sin(i * 7.3) * 0.3 + Math.sin(i * 3.7) * 0.2) * (H / 400);
+          const w = treeW * (0.8 + Math.sin(i * 5.1) * 0.2) * (W / 800);
+          drawTree(ctx, x, baseY, w, h * 3.5);
+        }
+      }
 
+      drawTreeLayer(0.6, H*0.38, 18, 'rgba(8,18,9,0.85)', 0.4, 22);
+      drawTreeLayer(0.75,H*0.48, 14, 'rgba(10,20,11,0.9)', 0.35, 18);
+      drawTreeLayer(1.0, H*0.60, 10, 'rgba(12,22,13,0.95)', 0.28, 14);
 
-function toggleForest() {
-  if (forest.paused) {
-    playForest();
-  } else {
-    forest.pause();
-    setForestIcon(false);
-  }
-}
+      ctx.fillStyle = '#050D06';
+      ctx.fillRect(0, H * 0.78, W, H * 0.22);
+    }
 
-// Dauer / Metadaten
+    resizeCanvas();
 
-forest.addEventListener('loadedmetadata', () => {
-  if (forestDurationEl) forestDurationEl.textContent = fmtTime(forest.duration);
-  if (forestProgress) forestProgress.max = forest.duration || 0;
-  if (forestTime) forestTime.textContent = fmtTime(forest.currentTime);
-});
+    // ===== AMBIENT DOTS =====
+    const ambientEl = document.getElementById('ambient');
+    for (let i = 0; i < 18; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'dot';
+      const size = Math.random() * 3 + 1;
+      const x = Math.random() * 100;
+      const dur = 8 + Math.random() * 14;
+      const delay = Math.random() * 12;
+      const bottom = Math.random() * 40;
+      dot.style.cssText = `
+        width:${size}px; height:${size}px;
+        left:${x}%; bottom:${bottom}%;
+        background: rgba(${100+Math.random()*80}, ${140+Math.random()*80}, ${80+Math.random()*60}, ${0.3+Math.random()*0.4});
+        animation-duration:${dur}s;
+        animation-delay:${delay}s;
+      `;
+      ambientEl.appendChild(dot);
+    }
 
+    // ===== AUDIO PLAYER LOGIC (FIXED) =====
+    const audios  = { 1: document.getElementById('audio1'), 2: document.getElementById('audio2') };
+    const cards   = { 1: document.getElementById('card1'),  2: document.getElementById('card2') };
+    const btns    = { 1: document.getElementById('btn1'),   2: document.getElementById('btn2') };
+    const icons   = { 1: document.getElementById('icon1'),  2: document.getElementById('icon2') };
+    const fills   = { 1: document.getElementById('fill1'),  2: document.getElementById('fill2') };
+    const curs    = { 1: document.getElementById('cur1'),   2: document.getElementById('cur2') };
+    const rems    = { 1: document.getElementById('rem1'),   2: document.getElementById('rem2') };
+    const durs    = { 1: document.getElementById('dur1'),   2: document.getElementById('dur2') };
+    const vols    = { 1: document.getElementById('vol1'),   2: document.getElementById('vol2') };
+    const mutes   = { 1: document.getElementById('mute1'),  2: document.getElementById('mute2') };
+    const bars    = { 1: document.getElementById('bar1'),   2: document.getElementById('bar2') };
 
-// Fortschritt
-forest.addEventListener('timeupdate', () => {
-  forestProgress.value = forest.currentTime;
-  forestTime.textContent = fmtTime(forest.currentTime);
-});
+    const PLAY_ICON  = '<path d="M8 5v14l11-7z"/>';
+    const PAUSE_ICON = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
 
-forest.addEventListener('play', () => setForestIcon(true));
-forest.addEventListener('pause', () => setForestIcon(false));
-forest.addEventListener('ended', () => setForestIcon(false));
+    function fmt(s) {
+      if (!isFinite(s) || s < 0) return '0:00';
+      const m = Math.floor(s / 60);
+      const sec = Math.floor(s % 60);
+      return m + ':' + String(sec).padStart(2, '0');
+    }
 
-// Scrubben
-forestProgress.addEventListener('input', () => {
-  forest.currentTime = Number(forestProgress.value);
-});
+    function setPlaying(id, playing) {
+      icons[id].innerHTML = playing ? PAUSE_ICON : PLAY_ICON;
+      btns[id].classList.toggle('playing', playing);
+      cards[id].classList.toggle('playing', playing);
+    }
 
-// Button
-forestToggle.addEventListener('click', (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  toggleForest();
-});
+    function hasRealSource(audioEl) {
+      const srcEl = audioEl.querySelector('source');
+      const src = srcEl?.getAttribute('src')?.trim();
+      if (!src) return false;
+      // Kann der Browser es grundsätzlich abspielen?
+      const type = srcEl.getAttribute('type') || '';
+      const can = type ? audioEl.canPlayType(type) : 'maybe';
+      return can !== '';
+    }
 
-// Sync, falls Browser/OS Volume/Muted verändert
-guided.addEventListener('volumechange', () => {
-  if (guidedVolume) guidedVolume.value = String(guided.muted ? 0 : guided.volume);
-  updateMuteIcon(guided, guidedVolOn, guidedVolOff);
-});
+    async function togglePlay(id) {
+      const a = audios[id];
 
-forest.addEventListener('volumechange', () => {
-  if (forestVolume) forestVolume.value = String(forest.muted ? 0 : forest.volume);
-  updateMuteIcon(forest, forestVolOn, forestVolOff);
-});
+      if (!hasRealSource(a)) {
+        console.warn(`Audio ${id}: keine (abspielbare) Source gefunden.`);
+        showNoSource(id);
+        return;
+      }
 
+      if (a.paused) {
+        try {
+          await a.play();
+          setPlaying(id, true);
+        } catch (err) {
+          console.error(`Audio ${id}: play() fehlgeschlagen:`, err);
+          // Fallback-Optik (optional):
+          setPlaying(id, false);
+          // Wenn du willst: Demo-Modus statt "nichts"
+          // showNoSource(id);
+        }
+      } else {
+        a.pause();
+        setPlaying(id, false);
+      }
+    }
 
-</script>
+    // Demo-Mode (falls keine Datei existiert)
+    const demoTimers = {};
+    let demoTime = { 1: 0, 2: 0 };
+    const demoMax = { 1: 1260, 2: 3600 };
 
+    function showNoSource(id) {
+      const isPlaying = cards[id].classList.contains('playing');
+      setPlaying(id, !isPlaying);
+      if (!isPlaying) demoInterval(id);
+    }
+
+    function demoInterval(id) {
+      clearInterval(demoTimers[id]);
+      demoTimers[id] = setInterval(() => {
+        if (!cards[id].classList.contains('playing')) {
+          clearInterval(demoTimers[id]);
+          return;
+        }
+        demoTime[id]++;
+        if (demoTime[id] >= demoMax[id]) {
+          demoTime[id] = 0;
+          setPlaying(id, false);
+          clearInterval(demoTimers[id]);
+          return;
+        }
+        const pct = (demoTime[id] / demoMax[id]) * 100;
+        fills[id].style.width = pct + '%';
+        curs[id].textContent = fmt(demoTime[id]);
+        rems[id].textContent = fmt(demoMax[id] - demoTime[id]);
+        durs[id].textContent = fmt(demoMax[id]);
+      }, 1000);
+    }
+
+    function seek(e, id) {
+      const a = audios[id];
+      const rect = bars[id].getBoundingClientRect();
+      const pct  = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+
+      // Stoppe Demo, wenn echtes Audio vorhanden
+      if (a.duration && isFinite(a.duration)) {
+        a.currentTime = pct * a.duration;
+      } else {
+        demoTime[id] = Math.floor(pct * demoMax[id]);
+        fills[id].style.width = (pct * 100) + '%';
+        curs[id].textContent = fmt(demoTime[id]);
+        rems[id].textContent = fmt(demoMax[id] - demoTime[id]);
+      }
+    }
+
+    function setVol(id, value) {
+      const a = audios[id];
+      a.volume = Number(value);
+    }
+
+    function toggleMute(id) {
+      const a = audios[id];
+      a.muted = !a.muted;
+      mutes[id].textContent = a.muted ? '🔇' : '🔊';
+    }
+
+    // Events initialisieren
+    [1, 2].forEach(id => {
+      const a = audios[id];
+
+      // Buttons / UI
+      btns[id].addEventListener('click', () => togglePlay(id));
+      bars[id].addEventListener('click', (e) => seek(e, id));
+      vols[id].addEventListener('input', (e) => setVol(id, e.target.value));
+      mutes[id].addEventListener('click', () => toggleMute(id));
+
+      // Startlautstärke
+      a.volume = parseFloat(vols[id].value);
+
+      // Metadaten / Fortschritt
+      a.addEventListener('loadedmetadata', () => {
+        durs[id].textContent = fmt(a.duration);
+        rems[id].textContent = fmt(a.duration);
+      });
+      a.addEventListener('timeupdate', () => {
+        if (!a.duration) return;
+        fills[id].style.width = (a.currentTime / a.duration * 100) + '%';
+        curs[id].textContent = fmt(a.currentTime);
+        rems[id].textContent = fmt(a.duration - a.currentTime);
+      });
+      a.addEventListener('play', () => setPlaying(id, true));
+      a.addEventListener('pause', () => setPlaying(id, false));
+      a.addEventListener('ended', () => setPlaying(id, false));
+
+      // Fehlerdiagnose (sehr hilfreich)
+      a.addEventListener('error', () => {
+        const err = a.error;
+        console.error(`Audio ${id}: ERROR`, err);
+      });
+      a.addEventListener('stalled', () => console.warn(`Audio ${id}: stalled (Netzwerk?)`));
+      a.addEventListener('waiting', () => console.warn(`Audio ${id}: waiting (buffering)`));
+    });
+
+    // Initiale Anzeige für Demo-Längen
+    durs[1].textContent = fmt(demoMax[1]);
+    durs[2].textContent = fmt(demoMax[2]);
+    rems[1].textContent = fmt(demoMax[1]);
+    rems[2].textContent = fmt(demoMax[2]);
+
+    // ===== WAKE LOCK =====
+    let wakeLock = null;
+    async function requestWakeLock() {
+      if ('wakeLock' in navigator) {
+        try { wakeLock = await navigator.wakeLock.request('screen'); } catch(e) {}
+      }
+    }
+    document.querySelectorAll('.btn-play').forEach(btn => {
+      btn.addEventListener('click', requestWakeLock);
+    });
+  </script>
 </body>
 </html>

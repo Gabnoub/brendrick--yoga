@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kontakt – Brendrick Yoga</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/CSS/style_mr.css" />
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="apple-touch-icon" href="/favicons/apple-touch-icon.png" sizes="180x180">
+  <script src="/scripts/meer.js" defer></script>
+</head>
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+  <div class="grain"></div>
+  <div class="ambient" id="ambient"></div>
+
+  <div class="wrapper">
+
+    <a href="../" class="back-link">
+      <span class="back-arrow"></span>
+      Zurück zur Meditation
+    </a>
+
+    <header class="page-header">
+      <div class="eyebrow">Brendrick Yoga · Kontakt</div>
+      <h1 class="page-title">Schreib <em>mir.</em></h1>
+      <p class="page-sub">Ich melde mich so schnell wie möglich bei dir.</p>
+    </header>
+
+    <div class="content-card">
+
+      <!-- E-Mail direkt -->
+      <div class="contact-intro">
+        <div class="contact-icon">✉️</div>
+        <div class="contact-intro-text">
+          <div class="contact-intro-label">Direkt erreichbar</div>
+          <div class="contact-intro-value">
+            <a href="mailto:service@brendrick-yoga.de">service@brendrick-yoga.de</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formular -->
+      <form class="contact-form" id="contactForm" novalidate>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="name">Name</label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              placeholder="Dein Name"
+              autocomplete="name"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="email">E-Mail</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="deine@email.de"
+              autocomplete="email"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="subject">Betreff</label>
+          <input
+            id="subject"
+            name="subject"
+            type="text"
+            placeholder="Worum geht es?"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="message">Nachricht</label>
+          <textarea
+            id="message"
+            name="message"
+            placeholder="Deine Nachricht …"
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-submit" type="submit">
+            <span>E-Mail vorbereiten</span>
+            <span class="arrow"></span>
+          </button>
+        </div>
+
+        <p class="form-note">
+          Mit dem Absenden werden deine Angaben zur Bearbeitung der Anfrage verarbeitet.
+          Weitere Infos in der <a href="../datenschutz/">Datenschutzerklärung</a>.
+        </p>
+
+      </form>
+
+      <!-- Erfolgs-Feedback (wird per JS eingeblendet) -->
+      <div class="form-success" id="formSuccess" role="alert" aria-live="polite">
+        <div class="success-icon">🌿</div>
+        <div class="success-title">Dein Mail-Programm öffnet sich …</div>
+        <p class="success-text">
+          Deine Nachricht wurde vorbereitet. Bitte sende sie in deinem Mail-Programm ab.
+        </p>
+      </div>
+
+    </div>
+
+    <a href="../" class="btn-back"><< Zurück zur Meditation</a>
+
+    <footer>
+      <a href="../impressum/">Impressum</a>
+      <span class="footer-sep">·</span>
+      <a href="../datenschutz/">Datenschutz</a>
+      <span class="footer-sep">·</span>
+      <a href="../kontakt/">Kontakt</a>
+    </footer>
+
+  </div>
+
+
+  <script>
+    (function () {
+      'use strict';
+
+      const form    = document.getElementById('contactForm');
+      const success = document.getElementById('formSuccess');
+
+      // Simple inline validation styling
+      function markField(el, valid) {
+        el.style.borderColor = valid
+          ? 'rgba(138, 174, 128, 0.55)'
+          : 'rgba(200, 80, 60, 0.55)';
+      }
+
+      form.querySelectorAll('[required]').forEach(function (el) {
+        el.addEventListener('blur', function () {
+          markField(el, el.validity.valid);
+        });
+        el.addEventListener('input', function () {
+          if (!el.validity.valid) return;
+          markField(el, true);
+        });
+      });
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // Validate all fields
+        var valid = true;
+        form.querySelectorAll('[required]').forEach(function (el) {
+          if (!el.validity.valid) {
+            markField(el, false);
+            valid = false;
+          }
+        });
+        if (!valid) return;
+
+        // Build mailto
+        var name    = document.getElementById('name').value.trim();
+        var email   = document.getElementById('email').value.trim();
+        var subject = document.getElementById('subject').value.trim();
+        var message = document.getElementById('message').value.trim();
+
+        var body =
+          'Name: ' + name + '\r\n' +
+          'E-Mail: ' + email + '\r\n\r\n' +
+          message;
+
+        var mailto =
+          'mailto:service@brendrick-yoga.de' +
+          '?subject=' + encodeURIComponent(subject) +
+          '&body='    + encodeURIComponent(body);
+
+        window.location.href = mailto;
+
+        // Show success state
+        form.style.display = 'none';
+        success.classList.add('visible');
+      });
+    }());
+  </script>
+</body>
+</html>
